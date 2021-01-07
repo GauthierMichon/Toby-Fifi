@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/home", name="home")
      */
     public function index()
     {
@@ -57,7 +57,7 @@ class HomeController extends AbstractController
             $em->persist($produit);
             $em->flush();
 
-            return new RedirectResponse('/');
+            return new RedirectResponse('/home');
         }
 
         return $this->render('home/create.html.twig', [
@@ -65,7 +65,24 @@ class HomeController extends AbstractController
         ]);
     }
 
-        /**
+    /**
+     * @Route("/delete/{id}", name="delete_post")
+     */
+    public function delete(int $id, Request $request, EntityManagerInterface $em)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $modif_produit = $em->getRepository(Produit::class)->find($id);
+
+        $em->remove($modif_produit);
+        $em->flush();
+
+        return new RedirectResponse('/home');
+
+        return $this->render('home/delete.html.twig', [
+        ]);
+    }
+
+    /**
      * @Route("/modif/{id}", name="modif_post")
      */
     public function modif(int $id, Request $request, EntityManagerInterface $em)
@@ -83,7 +100,7 @@ class HomeController extends AbstractController
             $em->persist($modif_produit);
             $em->flush();
 
-            return new RedirectResponse('/');
+            return new RedirectResponse('/home');
         }
 
         return $this->render('home/modif.html.twig', [
