@@ -5,20 +5,14 @@
 {% block body %}
 
 <div class="example-wrapper">
-    <h1>Logo</h1>
+
     <h1>Liste des Produits</h1>
 
-    <ul class="menu">
-            <li>
-                <a href="/login">Se connecter</a><br>
-            </li>
-            <li>
-                <a href="/register">S'inscrire</a><br>
-            </li>
-            <li>
-                <a href="/create">Créer un produit</a>
-            </li>
-        </ul>
+    <div class="jolilien">
+        <a href="/modif_user/{{ user_id }}">Modifier le profil</a><br>
+        <a href="/create">Créer un produit</a><br>
+        <a href="/logout">Se déconnecter</a>
+    </div>
 
     {% for produit in produits %}
     <a href="/produit/{{ produit.Id }}" class="link">
