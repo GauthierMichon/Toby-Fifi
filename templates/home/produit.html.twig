@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+
+    <h1>{{ produit.nom }}</h1>
+
+    <img src="https://via.placeholder.com/150" class="center">
+
+    <p>Description : {{ produit.Description }}</p>
+
+    
+    <p>Ce produit coûte {{ produit.Prix }} euros. {{ produit.Stock }} en stock</p>
+
+    <p>Sa durée de livraison est de {{ produit.DureeLivraison }} jours</p>
+
+    <button class="center">Ajouter au panier</button>
+
+    <a href="/modif/{{ produit.Id }}" class="retour">Modifier le produit</a>
+
+    <a href="/delete/{{ produit.Id }}" class="retour">Supprimer le produit</a>
+
+
+    <a href="/" class="retour">Retour</a>
+</div>{% endblock %}

@@ -3,18 +3,33 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Gauthier/Documents/B2-Ynov/Projet_Web/Toby-Fifi/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Gauthier/Documents/B2-Ynov/Projet_Web/Toby-Fifi/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
+    <h1>Liste des Produits</h1>
+    <div class="jolilien">
+        {% if is_granted('ROLE_USER') %}
+            <a href="/create">Créer un produit</a><br>
+        {% endif %}
+        <a href="/login">Se connecter</a><br>
+        <a href="/register">S'inscrire</a><br>
+        <a href="/create">Créer un produit</a>
+    </div>
+    {% for produit in produits %}
+    <a href="/produit/{{ produit.Id }}" class="link">
+        <div class="container">
+            <div class="card">
+                <div class="item">
+                    <img class="img" src="https://via.placeholder.com/150">
+                    <h2>Nom : {{ produit.nom }}</h2>
+                    <h3>Prix : {{ produit.prix }}</h3>
+                    <h3>Durée de livraison : {{ produit.DureeLivraison }} jours</h3>
+                    
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+
 </div>
 {% endblock %}

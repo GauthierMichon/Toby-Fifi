@@ -2,9 +2,17 @@
 
 ## Cloner le projet
 
-Tout d'abord vous devez installez yarn à l'adresse suivante : 
+Tout d'abord vous devez installez symfony, composer, nodeJS et yarn aux adresses suivantes : 
 
+https://symfony.com/download
+<br/>
+https://getcomposer.org/download/
+<br/>
+https://nodejs.org/fr/download/
+<br/>
 https://classic.yarnpkg.com/en/docs/install/#windows-stable
+
+
 
 Après avoir récupérer le projet sur git, et avoir lancer votre terminal dans le bon dossier. Vous faites les commandes suivantes : 
 
