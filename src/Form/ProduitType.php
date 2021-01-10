@@ -23,9 +23,7 @@ class ProduitType extends AbstractType
             ->add('stock', IntegerType::class)
             ->add('prix', MoneyType::class)
             ->add('duree_livraison', IntegerType::class)
-            ->add('image', FileType::class, [
-                'mapped' => false,
-            ])
+            ->add('ImageName', FileType::class)
             ->add("submit", SubmitType::class)
         ;
     }
