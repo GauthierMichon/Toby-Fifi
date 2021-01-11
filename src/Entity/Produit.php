@@ -47,6 +47,23 @@ class Produit
      */
     private $duree_livraison;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $ImageName;
+
+    public function getImageName()
+    {
+        return $this->ImageName;
+    }
+
+    public function setImageName($ImageName)
+    {
+        $this->ImageName = $ImageName;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

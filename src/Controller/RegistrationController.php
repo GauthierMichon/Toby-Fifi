@@ -21,7 +21,7 @@ class RegistrationController extends AbstractController
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
-        $user->setDepenseAvantBonAchat(100);
+        $user->setDepenseAvantBonAchat(300);
         $user->setSolde(0);
         $form->handleRequest($request);
 

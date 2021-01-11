@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Produit;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,6 +23,7 @@ class ProduitType extends AbstractType
             ->add('stock', IntegerType::class)
             ->add('prix', MoneyType::class)
             ->add('duree_livraison', IntegerType::class)
+            ->add('ImageName', FileType::class)
             ->add("submit", SubmitType::class)
         ;
     }

@@ -92,7 +92,7 @@ class Authenticator extends AbstractFormLoginAuthenticator implements PasswordAu
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-        return new RedirectResponse('/home');
+        return new RedirectResponse('/home_user');
     }
 
     protected function getLoginUrl()
