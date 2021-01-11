@@ -26,6 +26,13 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $user->getImageName();
+            $filename = md5(uniqid()).'.'.$file->guessExtension();
+            $file->move('images_users/', $filename);
+            $user->setImageName($filename);
+
+
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(

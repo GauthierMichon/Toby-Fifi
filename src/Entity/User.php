@@ -62,6 +62,23 @@ class User implements UserInterface
      */
     private $depense_avant_bon_achat;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $ImageName;
+
+    public function getImageName()
+    {
+        return $this->ImageName;
+    }
+
+    public function setImageName($ImageName)
+    {
+        $this->ImageName = $ImageName;
+
+        return $this;
+    }
+
 
     public function getId(): ?int
     {
