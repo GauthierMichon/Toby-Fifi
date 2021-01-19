@@ -15,7 +15,9 @@
 
     <p>Sa durée de livraison est de {{ produit.DureeLivraison }} jours</p>
 
-    <button class="center">Ajouter au panier</button>
+    {% if app.user %}
+        <a href="/add_panier/{{ produit.Id }}" class="retour">Ajouter au panier</a>
+    {% endif %}
 
     <a href="/modif/{{ produit.Id }}" class="retour">Modifier le produit</a>
 
