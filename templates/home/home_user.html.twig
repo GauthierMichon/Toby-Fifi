@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Hello HomeController!
+{% endblock %}
 
 {% block body %}
 
+<<<<<<< HEAD
 <div class="example-wrapper">
 
     <h1>Liste des Produits</h1>
@@ -32,4 +34,67 @@
     {% endfor %}
 
 </div>
+=======
+	<div class="example-wrapper">
+
+		<div class="header" id="myHeader">
+			<header id="containerD">
+				<div class="centerHeadLogo">
+					<a class="centerHeadLogo" href="home">
+						<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
+					</a>
+				</div>
+				<form class="searchbar" action='/login' method='post'>
+					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+				<div class="connex">
+					<form action='/login' method='post'>
+						<a href="/login">Connexion</a>
+					</form>
+				</div>
+			</div>
+		</header>
+		<div class="content">
+			<nav>
+				<ul class="centerHead">
+					<li>
+						<a href="/index">Accueil</a>
+					</li>
+					<li>
+						<a href="/create">Créer un produit</a>
+					</li>
+					<li>
+						<a href="/modif_user/{{ user_id }}">Modifier le profil</a>
+					</li>
+					<li>
+						<a href="/logout">Se déconnecter</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+
+		<h1>Liste des Produits</h1>
+
+		{% for produit in produits %}
+			<a href="/produit/{{ produit.Id }}" class="link">
+				<div class="container">
+					<div class="card">
+						<div class="item">
+							<img class="img" src="https://via.placeholder.com/150">
+							<h2>Nom :
+								{{ produit.nom }}</h2>
+							<h3>Prix :
+								{{ produit.prix }}</h3>
+							<h3>Durée de livraison :
+								{{ produit.DureeLivraison }}
+								jours</h3>
+
+						</div>
+					</div>
+				</div>
+			</a>
+		{% endfor %}
+
+	</div>
+>>>>>>> 4dba05e42f4e41ee953d0a9ffe9a631e8aa40460
 {% endblock %}
