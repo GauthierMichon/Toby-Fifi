@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\User;
 use App\Form\ModifProduitType;
@@ -245,6 +246,28 @@ class HomeController extends AbstractController
 
         return $this->render('home/modif_user_image.html.twig', [
             "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/add_panier/{id}", name="add_panier")
+     */
+    public function add_panier(int $id, EntityManagerInterface $em)
+    {
+        $panier = new Panier();
+        $user_id = $this->getUser()->getId();
+
+        $panier->setIdUser($user_id);
+        $panier->setIdProduit($id);
+
+        $em->persist($panier);
+        $em->flush();
+
+
+        return new RedirectResponse('/home_user');
+
+        return $this->render('home/add_panier.html.twig', [
+            
         ]);
     }
 }

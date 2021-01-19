@@ -48,11 +48,17 @@
 		{{ produit.Description }}</p>
 
 
+<<<<<<< HEAD
 	<p>Ce produit coûte
 		{{ produit.Prix }}
 		euros.
 		{{ produit.Stock }}
 		en stock</p>
+=======
+    {% if app.user %}
+        <a href="/add_panier/{{ produit.Id }}" class="retour">Ajouter au panier</a>
+    {% endif %}
+>>>>>>> 1aff3be6878a9027cd013412cb203c6a10c6358c
 
 	<p>Sa durée de livraison est de
 		{{ produit.DureeLivraison }}
