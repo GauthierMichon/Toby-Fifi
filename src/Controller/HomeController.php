@@ -271,4 +271,35 @@ class HomeController extends AbstractController
             
         ]);
     }
+
+    /**
+     * @Route("/show_panier", name="show_panier")
+     */
+    public function show_panier(EntityManagerInterface $em)
+    {
+        $user_id = $this->getUser()->getId();
+
+        $em = $this->getDoctrine()->getManager();
+        $panier = $em->getRepository(Panier::class)->findBy(array('id_user'=> $user_id));
+
+        $produits = [];
+
+        foreach($panier as $produit) {
+            array_push($produits, $produit->getIdProduit());
+        }
+
+
+        $Produits = $this->getDoctrine()
+            ->getRepository(Produit::class)
+            ->findAll();
+            
+        $user_id = $this->getUser()->getId();
+
+
+        
+
+        return $this->render('home/show_panier.html.twig', [
+            
+        ]);
+    }
 }
