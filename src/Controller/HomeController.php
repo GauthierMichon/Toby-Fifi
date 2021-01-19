@@ -44,7 +44,7 @@ class HomeController extends AbstractController
         $Produits = $this->getDoctrine()
             ->getRepository(Produit::class)
             ->findAll();
-            
+
         $user_id = $this->getUser()->getId();
 
 
@@ -80,7 +80,7 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $produit->getImageName();
-            $filename = md5(uniqid()).'.'.$file->guessExtension();
+            $filename = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move('images_produits/', $filename);
             $produit->setImageName($filename);
 
@@ -108,8 +108,7 @@ class HomeController extends AbstractController
 
         return new RedirectResponse('/home');
 
-        return $this->render('home/delete.html.twig', [
-        ]);
+        return $this->render('home/delete.html.twig', []);
     }
 
     /**
@@ -161,7 +160,7 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $modif_produit->getImageName();
-            $filename = md5(uniqid()).'.'.$file->guessExtension();
+            $filename = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move('images_produits/', $filename);
             $modif_produit->setImageName($filename);
 
@@ -178,7 +177,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    
+
     /**
      * @Route("/modif_user/{id}", name="modif_user")
      */
@@ -192,7 +191,7 @@ class HomeController extends AbstractController
 
         $user_id = $this->getUser()->getId();
 
-        
+
 
 
         $form->handleRequest($request);
@@ -232,7 +231,7 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $modif_user->getImageName();
-            $filename = md5(uniqid()).'.'.$file->guessExtension();
+            $filename = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move('images_users/', $filename);
             $modif_user->setImageName($filename);
 
@@ -248,6 +247,4 @@ class HomeController extends AbstractController
             "form" => $form->createView()
         ]);
     }
-
-
 }

@@ -1,26 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Hello HomeController!
+{% endblock %}
 
 {% block body %}
 
-    <h1>{{ produit.nom }}</h1>
+	<div class="header" id="myHeader">
+		<header id="containerD">
+			<div class="centerHeadLogo">
+				<a class="centerHeadLogo" href="/index">
+					<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
+				</a>
+			</div>
+			<form class="searchbar" action='/login' method='post'>
+				<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+			<div class="connex">
+				<form action='/login' method='post'>
+					<a href="/login">Connexion</a>
+				</form>
+			</div>
+		</div>
+	</header>
+	<div class="content">
+		<nav>
+			<ul class="centerHead">
+				<li>
+					<a href="/index">Accueil</a>
+				</li>
+				<li>
+					<a href="/create">Créer un produit</a>
+				</li>
+				<li>
+					<a href="https://google.fr/">Categorie</a>
+				</li>
+				<li>
+					<a href="https://google.fr/">Autre</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
 
-    <img src="https://via.placeholder.com/150" class="center">
+	<h1>{{ produit.nom }}</h1>
 
-    <p>Description : {{ produit.Description }}</p>
+	<img src="https://via.placeholder.com/150" class="center">
 
-    
-    <p>Ce produit coûte {{ produit.Prix }} euros. {{ produit.Stock }} en stock</p>
-
-    <p>Sa durée de livraison est de {{ produit.DureeLivraison }} jours</p>
-
-    <button class="center">Ajouter au panier</button>
-
-    <a href="/modif/{{ produit.Id }}" class="retour">Modifier le produit</a>
-
-    <a href="/delete/{{ produit.Id }}" class="retour">Supprimer le produit</a>
+	<p>Description :
+		{{ produit.Description }}</p>
 
 
-    <a href="/" class="retour">Retour</a>
+	<p>Ce produit coûte
+		{{ produit.Prix }}
+		euros.
+		{{ produit.Stock }}
+		en stock</p>
+
+	<p>Sa durée de livraison est de
+		{{ produit.DureeLivraison }}
+		jours</p>
+
+	<button class="center">Ajouter au panier</button>
+
+	<a href="/modif/{{ produit.Id }}" class="retour">Modifier le produit</a>
+
+	<a href="/delete/{{ produit.Id }}" class="retour">Supprimer le produit</a>
+
+
+	<a href="/" class="retour">Retour</a>
 </div>{% endblock %}
