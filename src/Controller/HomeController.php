@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Entity\User;
+use App\Form\ModifProduitType;
+use App\Form\ProduitImageFormType;
 use App\Form\ProduitType;
 use App\Form\RegistrationFormType;
 use App\Form\UserFormType;
+use App\Form\UserImageFormType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -118,7 +121,8 @@ class HomeController extends AbstractController
         $modif_produit = $em->getRepository(Produit::class)->find($id);
 
 
-        $form = $this->createForm(ProduitType::class, $modif_produit);
+
+        $form = $this->createForm(ModifProduitType::class, $modif_produit);
 
 
         $form->handleRequest($request);
@@ -131,6 +135,45 @@ class HomeController extends AbstractController
         }
 
         return $this->render('home/modif.html.twig', [
+            "form" => $form->createView(),
+            "id" => $id
+        ]);
+    }
+
+    /**
+     * @Route("/modif_produit_image/{id}", name="modif_produit_image")
+     */
+    public function modif_produit_image(int $id, Request $request, EntityManagerInterface $em)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $modif_produit = $em->getRepository(Produit::class)->find($id);
+
+        $ancienne_image = $modif_produit->getImageName();
+
+
+        $modif_produit->setImageName(null);
+
+        $form = $this->createForm(ProduitImageFormType::class, $modif_produit);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $modif_produit->getImageName();
+            $filename = md5(uniqid()).'.'.$file->guessExtension();
+            $file->move('images_produits/', $filename);
+            $modif_produit->setImageName($filename);
+
+            unlink("images_produits/$ancienne_image");
+
+            $em->persist($modif_produit);
+            $em->flush();
+
+            return new RedirectResponse('/home_user');
+        }
+
+        return $this->render('home/modif_user_image.html.twig', [
             "form" => $form->createView()
         ]);
     }
@@ -147,6 +190,10 @@ class HomeController extends AbstractController
 
         $form = $this->createForm(UserFormType::class, $modif_user);
 
+        $user_id = $this->getUser()->getId();
+
+        
+
 
         $form->handleRequest($request);
 
@@ -157,8 +204,50 @@ class HomeController extends AbstractController
             return new RedirectResponse('/home_user');
         }
 
-        return $this->render('home/modif.html.twig', [
+        return $this->render('home/modif_user.html.twig', [
+            "form" => $form->createView(),
+            "user_id" => $user_id
+        ]);
+    }
+
+
+    /**
+     * @Route("/modif_user_image/{id}", name="modif_user_image")
+     */
+    public function modif_user_image(int $id, Request $request, EntityManagerInterface $em)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $modif_user = $em->getRepository(User::class)->find($id);
+
+        $ancienne_image = $modif_user->getImageName();
+
+
+        $modif_user->setImageName(null);
+
+        $form = $this->createForm(UserImageFormType::class, $modif_user);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $modif_user->getImageName();
+            $filename = md5(uniqid()).'.'.$file->guessExtension();
+            $file->move('images_users/', $filename);
+            $modif_user->setImageName($filename);
+
+            unlink("images_users/$ancienne_image");
+
+            $em->persist($modif_user);
+            $em->flush();
+
+            return new RedirectResponse('/home_user');
+        }
+
+        return $this->render('home/modif_user_image.html.twig', [
             "form" => $form->createView()
         ]);
     }
+
+
 }

@@ -4,6 +4,16 @@
 
 {% block body %}
     <div class="retour">
-        {{ form(form) }}
+        {{ form_start(form)}}
+            {{ form_row(form.email) }}
+            {{ form_row(form.nom) }}
+            {{ form_row(form.prenom) }}
+            {{ form_row(form.date_naissance) }}
+            {{ form_row(form.solde) }}
+
+            <button type="submit" class="btn">Modifier</button>
+        {{ form_end(form) }}
+
+        <a href="/modif_user_image/{{ user_id }}">Modifier la photo de profil</a>
     </div>
 {% endblock %}
