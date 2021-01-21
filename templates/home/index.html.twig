@@ -21,8 +21,8 @@
 						<a href="/login">Connexion</a>
 					</form>
 				</div>
-			</div>
-		</header>
+			</header>
+		</div>
 		<div class="content">
 			<nav>
 				<ul class="centerHead">
@@ -45,18 +45,23 @@
 
 		{% for produit in produits %}
 			<a href="/produit/{{ produit.Id }}" class="link">
-				<div class="container">
-					<div class="card">
-						<div class="item">
-							<img class="img" src="https://via.placeholder.com/150">
-							<h2>Nom :
-								{{ produit.nom }}</h2>
-							<h3>Prix :
-								{{ produit.prix }}</h3>
-							<h3>Durée de livraison :
-								{{ produit.DureeLivraison }}
-								jours</h3>
-
+				<div class="container-fluid">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+								<div class="card">
+									<div class="item">
+										<img class="img" src="https://via.placeholder.com/150">
+										<h2>Nom :
+											{{ produit.nom }}</h2>
+										<h3>Prix :
+											{{ produit.prix }}</h3>
+										<h3>Durée de livraison :
+											{{ produit.DureeLivraison }}
+											jours</h3>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
