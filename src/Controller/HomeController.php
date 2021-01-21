@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\User;
+use App\Entity\Ventes;
 use App\Form\ModifProduitType;
 use App\Form\ProduitImageFormType;
 use App\Form\ProduitType;
@@ -102,14 +103,37 @@ class HomeController extends AbstractController
     public function delete(int $id, Request $request, EntityManagerInterface $em)
     {
         $em = $this->getDoctrine()->getManager();
-        $modif_produit = $em->getRepository(Produit::class)->find($id);
+        $delete_produit = $em->getRepository(Produit::class)->find($id);
 
-        $em->remove($modif_produit);
+        $em->remove($delete_produit);
         $em->flush();
 
-        return new RedirectResponse('/home');
+        return new RedirectResponse('/home_user');
 
         return $this->render('home/delete.html.twig', []);
+    }
+
+    /**
+     * @Route("/delete_panier/{id}", name="delete_panier")
+     */
+    public function delete_panier(int $id, Request $request, EntityManagerInterface $em)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $delete_produit = $em->getRepository(Produit::class)->find($id);
+
+        $user = $this->getUser();
+
+        $prod = $this->getDoctrine()
+            ->getRepository(Panier::class)
+            ->findBy(array('id_produit'=> $delete_produit->getId(), 'id_user'=> $user->getId()));
+
+
+        $em->remove($prod[0]);
+        $em->flush();
+
+        return new RedirectResponse('/show_panier');
+
+        return $this->render('home/delete_panier.html.twig', []);
     }
 
     /**
@@ -268,6 +292,116 @@ class HomeController extends AbstractController
 
         return $this->render('home/add_panier.html.twig', [
             
+        ]);
+    }
+
+    /**
+     * @Route("/show_panier", name="show_panier")
+     */
+    public function show_panier(EntityManagerInterface $em)
+    {
+        $user_id = $this->getUser()->getId();
+
+        $em = $this->getDoctrine()->getManager();
+        $panier_user = $em->getRepository(Panier::class)->findBy(array('id_user'=> $user_id));
+
+        $panier = [];
+        $produits = [];
+        $total = 0;
+
+        foreach($panier_user as $produit) {
+
+            $id = $produit->getIdProduit();
+
+            $prod = $this->getDoctrine()
+                ->getRepository(Produit::class)
+                ->findBy(array('id'=> $id));
+
+            array_push($panier, $prod);
+        }
+
+        foreach($panier as $produit) {
+            foreach($produit as $prod) {
+                array_push($produits, $prod);
+                $total += $prod->getPrix();
+            }
+        }
+            
+        $user = $this->getUser();
+
+        return $this->render('home/show_panier.html.twig', [
+            "produits" => $produits,
+            "user" => $user,
+            "total" => $total
+        ]);
+    }
+
+    /**
+     * @Route("/payer", name="payer")
+     */
+    public function payer(EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $panier_user = $em->getRepository(Panier::class)->findBy(array('id_user'=> $user->getId()));
+
+        $panier = [];
+        $produits = [];
+        $total = 0;
+
+        foreach($panier_user as $produit) {
+
+            $id = $produit->getIdProduit();
+
+            $prod = $this->getDoctrine()
+                ->getRepository(Produit::class)
+                ->findBy(array('id'=> $id));
+
+            array_push($panier, $prod);
+
+            $em->remove($produit);
+
+        }
+
+        foreach($panier as $produit) {
+            foreach($produit as $prod) {
+                array_push($produits, $prod);
+                $total += $prod->getPrix();
+
+                $prod->setStock($prod->getStock() - 1);
+
+                $vente = new Ventes();
+
+                $vente->setIdUser($user->getId())
+                    ->setIdProduit($prod->getId())
+                    ->setDate(new \DateTime());
+
+
+                $em->persist($vente);
+                $em->persist($prod);
+            }
+        }
+            
+        
+
+        $user->setSolde($user->getSolde() - $total);
+        $user->setDepenseAvantBonAchat($user->getDepenseAvantBonAchat() - $total);
+
+        $em->persist($user);
+        $em->flush();
+
+        
+
+
+
+        return new RedirectResponse('/home_user');
+
+
+        return $this->render('home/show_panier.html.twig', [
+            "produits" => $produits,
+            "user" => $user,
+            "total" => $total
         ]);
     }
 }
