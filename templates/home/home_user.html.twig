@@ -17,8 +17,8 @@
 				<form class="searchbar" action='/login' method='post'>
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
 				<div class="connex">
-					<form action='/login' method='post'>
-						<a href="/login">Connexion</a>
+					<form action='/show_panier' method='post'>
+						<a href="/show_panier">Panier</a>
 					</form>
 				</div>
 			</div>
@@ -54,7 +54,7 @@
 							<h2>Nom :
 								{{ produit.nom }}</h2>
 							<h3>Prix :
-								{{ produit.prix }}</h3>
+								{{ produit.prix }} €</h3>
 							<h3>Durée de livraison :
 								{{ produit.DureeLivraison }}
 								jours</h3>

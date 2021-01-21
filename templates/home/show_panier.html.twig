@@ -6,30 +6,35 @@
 
 <div class="example-wrapper">
 
-    <h1>Liste des Produits</h1>
-
-    <div class="jolilien">
-        <a href="/modif_user/{{ user_id }}">Modifier le profil</a><br>
-        <a href="/create">Créer un produit</a><br>
-        <a href="/logout">Se déconnecter</a><br>
-        <a href="/show_panier">Afficher panier</a>
-    </div>
+    <h1>Liste des Produits du Panier</h1>
 
     {% for produit in produits %}
-    <a href="/produit/{{ produit.Id }}" class="link">
+    <a href="/produit/{{ produit.id }}" class="link">
         <div class="container">
             <div class="card">
                 <div class="item">
                     <img class="img" src="https://via.placeholder.com/150">
                     <h2>Nom : {{ produit.nom }}</h2>
-                    <h3>Prix : {{ produit.prix }}</h3>
+                    <h3>Prix : {{ produit.prix }} €</h3>
                     <h3>Durée de livraison : {{ produit.DureeLivraison }} jours</h3>
                     
                 </div>
             </div>
+            <a href="/delete_panier/{{ produit.Id }}" class="retour">Supprimer du panier</a>
         </div>
+
+        
     </a>
     {% endfor %}
+
+    <h3> Prix total : {{ total }} </h3>
+
+    {% if user.solde >= total %}
+        <a href="/payer" class="link">Payer</a>
+    {% else %}
+        <h3>Vous n'avez pas assez d'argent sur votre compte : 
+        <a href="/modif_user/{{ user.Id }}" class="link">Modifier le profil</a>
+    {% endif %}
 
 </div>
 {% endblock %}
