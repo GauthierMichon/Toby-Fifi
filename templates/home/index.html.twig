@@ -18,55 +18,89 @@
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
 				<div class="connex">
 					<form action='/login' method='post'>
-						<a href="/login">Connexion</a>
+						<a href="/login">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Connexion
+							</button>
+						</a>
 					</form>
 				</div>
 			</header>
 		</div>
-		<div class="content">
-			<nav>
-				<ul class="centerHead">
+
+
+		<ul class="nav justify-content-center">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					Catégorie
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<li>
-						<a href="/index">Accueil</a>
+						<a class="dropdown-item" href="#">Foot</a>
 					</li>
 					<li>
-						<a href="/create">Créer un produit</a>
+						<a class="dropdown-item" href="#">Rugby</a>
+					</li>
+					<li><hr class="dropdown-divider"></li>
+					<li>
+						<a class="dropdown-item" href="#">Chaussures</a>
 					</li>
 					<li>
-						<a href="https://google.fr/">Categorie</a>
+						<a class="dropdown-item" href="#">Veste</a>
 					</li>
 					<li>
-						<a href="https://google.fr/">Autre</a>
+						<a class="dropdown-item" href="#">Camion</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Tracteur</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Sac à dos</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Voiture</a>
 					</li>
 				</ul>
-			</nav>
-		</div>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" href="#">Home</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Inscription</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Autre</a>
+			</li>
+		</ul>
 
 
-		{% for produit in produits %}
-			<a href="/produit/{{ produit.Id }}" class="link">
-				<div class="container-fluid">
-					<div class="container">
-						<div class="row">
-							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-								<div class="card">
-									<div class="item">
-										<img class="img" src="https://via.placeholder.com/150">
-										<h2>Nom :
-											{{ produit.nom }}</h2>
-										<h3>Prix :
-											{{ produit.prix }}</h3>
-										<h3>Durée de livraison :
-											{{ produit.DureeLivraison }}
-											jours</h3>
+		<div class="espace">
+			<div class="container">
+				<div class="row">
+					{% for produit in produits %}
+						<div class="col-sm-4 col-lg-4">
+							<div class="col">
+								<div class="espace">
+									<div class="card h-100">
+										<a href="/produit/{{ produit.Id }}" class="link">
+											<img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+											<div class="card-body">
+												<h4 class="card-title">{{ produit.nom }}</h4>
+												<p class="card-text">
+													Prix :{{ produit.prix }}
+													<br>
+													Durée de livraison :{{ produit.DureeLivraison }}jours
+												</p>
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					{% endfor %}
 				</div>
-			</a>
-		{% endfor %}
-
+			</div>
+		</div>
 	</div>
+
 {% endblock %}
