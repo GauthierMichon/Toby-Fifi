@@ -305,9 +305,12 @@ class HomeController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $panier_user = $em->getRepository(Panier::class)->findBy(array('id_user'=> $user_id));
 
+
         $panier = [];
         $produits = [];
+        $id_prod_panier = [];
         $total = 0;
+        $error = null;
 
         foreach($panier_user as $produit) {
 
@@ -318,7 +321,18 @@ class HomeController extends AbstractController
                 ->findBy(array('id'=> $id));
 
             array_push($panier, $prod);
+            array_push($id_prod_panier, $id);
         }
+
+        $arr = array_count_values($id_prod_panier);
+
+        foreach($panier as $produit) {
+
+            if ($produit[0]->getStock() < ($arr[$id])) {
+                $error = "Il n'y a pas assez de stock de ".$produit[0]->getNom()." pour finaliser votre commande.";
+            }
+        }
+
 
         foreach($panier as $produit) {
             foreach($produit as $prod) {
@@ -332,7 +346,8 @@ class HomeController extends AbstractController
         return $this->render('home/show_panier.html.twig', [
             "produits" => $produits,
             "user" => $user,
-            "total" => $total
+            "total" => $total,
+            "error" => $error
         ]);
     }
 

@@ -27,13 +27,21 @@
     </a>
     {% endfor %}
 
-    <h3> Prix total : {{ total }} </h3>
+    
 
-    {% if user.solde >= total %}
-        <a href="/payer" class="link">Payer</a>
-    {% else %}
+    {% if error == true %}
+
+        <h3> {{ error }} </h3>
+
+    {% elseif user.solde <= total %}
+        <h3> Prix total : {{ total }} </h3>
+
         <h3>Vous n'avez pas assez d'argent sur votre compte : 
         <a href="/modif_user/{{ user.Id }}" class="link">Modifier le profil</a>
+    {% else %}
+        <h3> Prix total : {{ total }} </h3>
+
+        <a href="/payer" class="link">Payer</a>
     {% endif %}
 
 </div>
