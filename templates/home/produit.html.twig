@@ -14,11 +14,19 @@
 			</div>
 			<form class="searchbar" action='/login' method='post'>
 				<input type='text' name='rechercher' placeholder="Rechercher"/></form>
-			<div class="connex">
-				<form action='/login' method='post'>
-					<a href="/login">Connexion</a>
-				</form>
-			</div>
+			{% if app.user %}
+				<div class="connex">
+					<form action='/show_panier' method='post'>
+						<a href="/show_panier">Panier</a>
+					</form>
+				</div>
+			{% else %}	
+				<div class="connex">
+					<form action='/login' method='post'>
+						<a href="/login">Connexion</a>
+					</form>
+				</div>
+			{% endif %}
 		</div>
 	</header>
 	<div class="content">
@@ -63,6 +71,35 @@
 
 	<a href="/delete/{{ produit.Id }}" class="retour">Supprimer le produit</a>
 
+	
 
-	<a href="/" class="retour">Retour</a>
+	<h3>Liste des commentaires : </h3>
+
+	{% for commentaire in commentaires %}
+		<div>
+			{{ commentaire.commentaire }}
+		</div>
+	{% endfor %}
+
+	{% if app.user %}
+		<div class="retour">
+			{{ form(form) }}
+		</div>
+	{% endif %}
+
+
+
+	<h3>Moyenne des Notes : </h3>
+
+	<div>
+		{{ moyenne }}
+	</div>
+
+	{% if app.user %}
+		<div class="retour">
+			{{ form(form_note) }}
+		</div>
+	{% endif %}
+
+
 </div>{% endblock %}

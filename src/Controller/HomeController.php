@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentaires;
+use App\Entity\Notes;
 use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\User;
 use App\Entity\Ventes;
+use App\Form\CommentairesFormType;
 use App\Form\ModifProduitType;
+use App\Form\NotesFormType;
 use App\Form\ProduitImageFormType;
 use App\Form\ProduitType;
 use App\Form\RegistrationFormType;
@@ -59,10 +63,122 @@ class HomeController extends AbstractController
     /**
      * @Route("/produit/{id}", name="show_post")
      */
-    public function show(Produit $produit)
-    {
+    public function show(int $id, Produit $produit, Request $request, EntityManagerInterface $em)
+    {   
+
+        $user = $this->getUser();
+        $nb_note = 0;
+        $total_note = 0;
+        $moyenne = null;
+
+        if (!empty($user)) {
+            $em = $this->getDoctrine()->getManager();
+            $modif_commentaire = $em
+                ->getRepository(Commentaires::class)
+                ->findBy(array('id_produit'=> $id, 'id_user'=> $user->getId()));
+
+
+            $modif_note = $em
+                ->getRepository(Notes::class)
+                ->findBy(array('id_produit'=> $id, 'id_user'=> $user->getId()));
+        }
+
+        if (!empty($modif_commentaire)) {
+            $form = $this->createForm(CommentairesFormType::class, $modif_commentaire[0]);
+        }
+        else {
+            $commentaire = new Commentaires();
+
+            $form = $this->createForm(CommentairesFormType::class, $commentaire);
+        }
+
+
+        $form->handleRequest($request);
+
+        if (!empty($modif_commentaire) && $form->isSubmitted() && $form->isValid()) {
+            $em->persist($modif_commentaire[0]);
+            $em->flush();     
+
+            return $this->redirect($request->getUri());
+        }
+
+        else if (empty($modif_commentaire) && $form->isSubmitted() && $form->isValid()) {
+
+
+            $commentaire->setIdUser($user->getId());
+            $commentaire->setIdProduit($id);
+
+            $em->persist($commentaire);
+            $em->flush();
+            
+
+            return $this->redirect($request->getUri());
+
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $commentaires = $em
+            ->getRepository(Commentaires::class)
+            ->findBy(array('id_produit'=> $id));
+
+        
+
+    
+        if (!empty($modif_note)) {
+            $form_note = $this->createForm(NotesFormType::class, $modif_note[0]);
+        }
+        else {
+            $note = new Notes();
+
+            $form_note = $this->createForm(NotesFormType::class, $note);
+        }
+
+
+        $form_note->handleRequest($request);
+
+
+        if (!empty($modif_note) && $form_note->isSubmitted() && $form_note->isValid()) {
+            $em->persist($modif_note[0]);
+            $em->flush();     
+
+            return $this->redirect($request->getUri());
+        }
+
+        else if (empty($modif_note) && $form_note->isSubmitted() && $form_note->isValid()) {
+
+
+            $note->setIdUser($user->getId());
+            $note->setIdProduit($id);
+
+            $em->persist($note);
+            $em->flush();
+            
+
+            return $this->redirect($request->getUri());
+
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $notes = $em
+            ->getRepository(Notes::class)
+            ->findBy(array('id_produit'=> $id));
+
+        foreach ($notes as $note) {
+            $nb_note += 1;
+            $total_note += $note->getNote();
+        }
+
+        if (!empty($notes)) {
+            $moyenne = $total_note/$nb_note;
+        }
+
+
         return $this->render('home/produit.html.twig', [
-            'produit' => $produit
+            'produit' => $produit,
+            "form" => $form->createView(),
+            "form_note" => $form_note->createView(),
+            "commentaires" => $commentaires,
+            "moyenne" => $moyenne
         ]);
     }
 
@@ -406,6 +522,14 @@ class HomeController extends AbstractController
         $em->persist($user);
         $em->flush();
 
+
+        $to = "gauthier.michon@gmail.com" ;
+        $subject = "Toby&Fifi - Payement effectué" ;
+        $message = "Vous avez payé $total €. Merci de votre achat." ;
+        $headers = "From: projetwebynov@gmail.com";
+
+
+        mail($to, $subject, $message, $headers) ;
         
 
 
