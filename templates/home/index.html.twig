@@ -1,12 +1,8 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Hello HomeController!
 {% endblock %}
-
 {% block body %}
-
 	<div class="example-wrapper">
-
 		<div class="header" id="myHeader">
 			<header id="containerD">
 				<div class="centerHeadLogo">
@@ -27,8 +23,6 @@
 				</div>
 			</header>
 		</div>
-
-
 		<ul class="nav justify-content-center">
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -72,8 +66,6 @@
 				<a class="nav-link" href="#">Autre</a>
 			</li>
 		</ul>
-
-
 		<div class="espace">
 			<div class="container">
 				<div class="row">
@@ -87,9 +79,13 @@
 											<div class="card-body">
 												<h4 class="card-title">{{ produit.nom }}</h4>
 												<p class="card-text">
-													Prix :{{ produit.prix }}
+													Prix :
+													{{ produit.prix }}
+													euros
 													<br>
-													Durée de livraison :{{ produit.DureeLivraison }}jours
+													Durée de livraison :
+													{{ produit.DureeLivraison }}
+													jours
 												</p>
 											</a>
 										</div>
@@ -102,5 +98,4 @@
 			</div>
 		</div>
 	</div>
-
 {% endblock %}
