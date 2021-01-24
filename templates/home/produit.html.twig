@@ -116,39 +116,40 @@
 								<a href="/delete/{{ produit.Id }}" class="btn btn-primary">Supprimer le produit</a>
 								<a href="/" class="btn btn-primary">Retour</a>
 							</div>
+							
+							<div class="espace">
+								<h3>Liste des commentaires :
+								</h3>
+
+								{% for commentaire in commentaires %}
+									<div>
+										{{ commentaire.commentaire }}
+									</div>
+								{% endfor %}
+
+								{% if app.user %}
+									<div class="retour">
+										{{ form(form) }}
+										</div>
+									{% endif %}
+
+
+									<h3>Moyenne des Notes :
+									</h3>
+
+									<div>
+										{{ moyenne }}
+									</div>
+
+									{% if app.user %}
+										<div class="retour">
+											{{ form(form_note) }}
+											</div>
+										{% endif %}
+										<div></div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<h3>Liste des commentaires : </h3>
-
-	{% for commentaire in commentaires %}
-		<div>
-			{{ commentaire.commentaire }}
-		</div>
-	{% endfor %}
-
-	{% if app.user %}
-		<div class="retour">
-			{{ form(form) }}
-		</div>
-	{% endif %}
-
-
-
-	<h3>Moyenne des Notes : </h3>
-
-	<div>
-		{{ moyenne }}
-	</div>
-
-	{% if app.user %}
-		<div class="retour">
-			{{ form(form_note) }}
-		</div>
-	{% endif %}
-
-
-</div>{% endblock %}
+				{% endblock %}
