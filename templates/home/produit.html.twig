@@ -4,65 +4,122 @@
 {% endblock %}
 
 {% block body %}
+	<div class="example-wrapper">
+		<div class="header" id="myHeader">
+			<header id="containerD">
+				<div class="centerHeadLogo">
+					<a class="centerHeadLogo" href="/index">
+						<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
+					</a>
+				</div>
+				<form class="searchbar" action='/login' method='post'>
+					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+				<div class="connex">
 
-	<div class="header" id="myHeader">
-		<header id="containerD">
-			<div class="centerHeadLogo">
-				<a class="centerHeadLogo" href="/index">
-					<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
+					{% if app.user %}
+						<form action='/show_panier' method='post'>
+							<a href="/show_panier">
+								<button type="button" class=" btn btn-primary btn-lg">
+									Panier
+								</button>
+							</a>
+						</form>
+					{% else %}
+						<form action='/login' method='post'>
+							<a href="/login">
+								<button type="button" class=" btn btn-primary btn-lg">
+									Connexion
+								</button>
+							</a>
+						</form>
+					{% endif %}
+				</div>
+			</header>
+		</div>
+		<ul class="nav justify-content-center">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					Catégorie
 				</a>
-			</div>
-			<form class="searchbar" action='/login' method='post'>
-				<input type='text' name='rechercher' placeholder="Rechercher"/></form>
-			<div class="connex">
-				<form action='/login' method='post'>
-					<a href="/login">Connexion</a>
-				</form>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<li>
+						<a class="dropdown-item" href="#">Foot</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Rugby</a>
+					</li>
+					<li><hr class="dropdown-divider"></li>
+					<li>
+						<a class="dropdown-item" href="#">Chaussures</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Veste</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Camion</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Tracteur</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Sac à dos</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Voiture</a>
+					</li>
+				</ul>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" href="#">Home</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Inscription</a>
+			</li>
+			{% if app.user %}
+				<li class="nav-item">
+					<a class="nav-link" href="/logout">Se déconnecter</a>
+				</li>
+			{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="#">Autre</a>
+				</li>
+			{% endif %}
+
+		</ul>
+
+		<div class="espace">
+			<h1>{{ produit.nom }}</h1>
+		</div>
+		<div class="container">
+			<div class="row justify-content-md-center">
+				<div class="inscrip">
+					<div>
+
+						<img src="https://via.placeholder.com/150" class="center">
+
+						<div class="espace">
+							<p>Description :
+								{{ produit.Description }}.
+								{{ produit.Stock }}
+								en stock</p>
+
+
+							<p>Sa durée de livraison est de
+								{{ produit.DureeLivraison }}
+								jours</p>
+
+							<div class="inscrip">
+								{% if app.user %}
+									<a href="/add_panier/{{ produit.Id }}" class="btn btn-primary">Ajouter au panier</a>
+								{% endif %}
+								<a href="/modif/{{ produit.Id }}" class="btn btn-primary">Modifier le produit</a>
+								<a href="/delete/{{ produit.Id }}" class="btn btn-primary">Supprimer le produit</a>
+								<a href="/" class="btn btn-primary">Retour</a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</header>
-	<div class="content">
-		<nav>
-			<ul class="centerHead">
-				<li>
-					<a href="/index">Accueil</a>
-				</li>
-				<li>
-					<a href="/create">Créer un produit</a>
-				</li>
-				<li>
-					<a href="https://google.fr/">Categorie</a>
-				</li>
-				<li>
-					<a href="https://google.fr/">Autre</a>
-				</li>
-			</ul>
-		</nav>
 	</div>
-
-	<h1>{{ produit.nom }}</h1>
-
-	<img src="https://via.placeholder.com/150" class="center">
-
-	<p>Description :
-		{{ produit.Description }}.
-		{{ produit.Stock }}
-		en stock</p>
-
-
-	<p>Sa durée de livraison est de
-		{{ produit.DureeLivraison }}
-		jours</p>
-
-	{% if app.user %}
-		<a href="/add_panier/{{ produit.Id }}" class="retour">Ajouter au panier</a>
-	{% endif %}
-
-
-	<a href="/modif/{{ produit.Id }}" class="retour">Modifier le produit</a>
-
-	<a href="/delete/{{ produit.Id }}" class="retour">Supprimer le produit</a>
-
-
-	<a href="/" class="retour">Retour</a>
-</div>{% endblock %}
+{% endblock %}

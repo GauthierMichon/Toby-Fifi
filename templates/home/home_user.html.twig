@@ -6,11 +6,10 @@
 {% block body %}
 
 	<div class="example-wrapper">
-
 		<div class="header" id="myHeader">
 			<header id="containerD">
 				<div class="centerHeadLogo">
-					<a class="centerHeadLogo" href="home">
+					<a class="centerHeadLogo" href="/index">
 						<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
 					</a>
 				</div>
@@ -18,52 +17,91 @@
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
 				<div class="connex">
 					<form action='/show_panier' method='post'>
-						<a href="/show_panier">Panier</a>
+						<a href="/show_panier">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Panier
+							</button>
+						</a>
 					</form>
 				</div>
-			</div>
-		</header>
-		<div class="content">
-			<nav>
-				<ul class="centerHead">
-					<li>
-						<a href="/index">Accueil</a>
-					</li>
-					<li>
-						<a href="/create">Créer un produit</a>
-					</li>
-					<li>
-						<a href="/modif_user/{{ user_id }}">Modifier le profil</a>
-					</li>
-					<li>
-						<a href="/logout">Se déconnecter</a>
-					</li>
-				</ul>
-			</nav>
+			</header>
 		</div>
 
+		<ul class="nav justify-content-center">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					Catégorie
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<li>
+						<a class="dropdown-item" href="#">Foot</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Rugby</a>
+					</li>
+					<li><hr class="dropdown-divider"></li>
+					<li>
+						<a class="dropdown-item" href="#">Chaussures</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Veste</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Camion</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Tracteur</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Sac à dos</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Voiture</a>
+					</li>
+				</ul>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" href="/create">Créer un produit</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Accueil</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/logout">Se déconnecter</a>
+			</li>
+		</ul>
 
-		<h1>Liste des Produits</h1>
-
-		{% for produit in produits %}
-			<a href="/produit/{{ produit.Id }}" class="link">
-				<div class="container">
-					<div class="card">
-						<div class="item">
-							<img class="img" src="https://via.placeholder.com/150">
-							<h2>Nom :
-								{{ produit.nom }}</h2>
-							<h3>Prix :
-								{{ produit.prix }} €</h3>
-							<h3>Durée de livraison :
-								{{ produit.DureeLivraison }}
-								jours</h3>
-
+		<div class="espace">
+			<div class="container">
+				<div class="row">
+					{% for produit in produits %}
+						<div class="col-sm-4 col-lg-4">
+							<div class="col">
+								<div class="espace">
+									<div class="card h-100">
+										<a href="/produit/{{ produit.Id }}" class="link">
+											<img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+											<div class="card-body">
+												<h4 class="card-title">{{ produit.nom }}</h4>
+												<p class="card-text">
+													Prix :
+													{{ produit.prix }}
+													euros
+													<br>
+													Durée de livraison :
+													{{ produit.DureeLivraison }}
+													jours
+												</p>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
+					{% endfor %}
 				</div>
-			</a>
-		{% endfor %}
-
+			</div>
+		</div>
 	</div>
+
 {% endblock %}
