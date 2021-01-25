@@ -5,29 +5,83 @@
 
 {% block body %}
 
-	<div class="header" id="myHeader">
-		<header id="containerD">
-			<div class="centerHeadLogo">
-				<a class="centerHeadLogo" href="/index">
-					<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
-				</a>
-			</div>
-			<form class="searchbar" action='/login' method='post'>
-				<input type='text' name='rechercher' placeholder="Rechercher"/></form>
-			<div class="connex">
-				<form action='/login' method='post'>
-					<a href="/login">Connexion</a>
-				</form>
-			</div>
+	<div class="example-wrapper">
+		<div class="header" id="myHeader">
+			<header id="containerD">
+				<div class="centerHeadLogo">
+					<a class="centerHeadLogo" href="/index">
+						<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
+					</a>
+				</div>
+				<form class="searchbar" action='/login' method='post'>
+					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+				<div class="connex">
+					<form action='/show_panier' method='post'>
+						<a href="/show_panier">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Panier
+							</button>
+						</a>
+					</form>
+				</div>
+			</header>
 		</div>
-	</header>
-	<div class="content">
-		<nav>
-			<ul class="centerHead"></ul>
-		</nav>
-	</div>
 
-	<div class="retour">
-		{{ form(form) }}
+		<ul class="nav justify-content-center">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					Catégorie
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<li>
+						<a class="dropdown-item" href="#">Foot</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Rugby</a>
+					</li>
+					<li><hr class="dropdown-divider"></li>
+					<li>
+						<a class="dropdown-item" href="#">Chaussures</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Veste</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Camion</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Tracteur</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Sac à dos</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Voiture</a>
+					</li>
+				</ul>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" href="/create">Créer un produit</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Accueil</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/logout">Se déconnecter</a>
+			</li>
+		</ul>
+
+		<div class="espace">
+			<h1>Modification de la photo du produit</h1>
+		</div>
+		<div class="container">
+			<div class="row justify-content-md-center">
+				<div class="inscrip">
+					<div class="retour">
+						{{ form(form) }}
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	{% endblock %}
