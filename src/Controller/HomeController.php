@@ -51,14 +51,52 @@ class HomeController extends AbstractController
             ->getRepository(Produit::class)
             ->findAll();
 
-        $user_id = $this->getUser()->getId();
+        $user = $this->getUser();
 
 
         return $this->render('home/home_user.html.twig', [
             'produits' => $Produits,
-            'user_id' => $user_id,
+            'user' => $user,
         ]);
     }
+
+
+    /**
+     * @Route("/recherche", name="recherche")
+     */
+    public function recherche(EntityManagerInterface $em)
+    {
+
+        $recherche = $_POST['rechercher'];
+
+        $query = $em->createQuery(
+            'SELECT p
+            FROM App\Entity\Produit p
+            WHERE p.nom LIKE :recherche'
+        )->setParameter('recherche', '%'.$recherche.'%');
+
+        // returns an array of Product objects
+        
+        $Produits = $query->getResult();
+
+        $user = $this->getUser();
+
+        if (!empty($user)) {
+            return $this->render('home/recherche.html.twig', [
+                'produits' => $Produits,
+                "recherche" => $recherche,
+                "user" => $user
+            ]);
+        }
+
+        else {
+            return $this->render('home/recherche.html.twig', [
+                'produits' => $Produits,
+                "recherche" => $recherche,
+            ]);
+        }
+    }
+
 
     /**
      * @Route("/produit/{id}", name="show_post")
@@ -220,6 +258,25 @@ class HomeController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $delete_produit = $em->getRepository(Produit::class)->find($id);
+        $delete_produit_panier = $em->getRepository(Panier::class)->findBy(array('id_produit'=> $id));
+        $delete_produit_notes = $em->getRepository(Notes::class)->findBy(array('id_produit'=> $id));
+        $delete_produit_commentaires = $em->getRepository(Commentaires::class)->findBy(array('id_produit'=> $id));
+        
+
+        unlink("images_produits/".$delete_produit->getImageName());
+
+        foreach ($delete_produit_panier as $supp_panier) {
+            $em->remove($supp_panier);
+        }
+
+        foreach ($delete_produit_notes as $supp_note) {
+            $em->remove($supp_note);
+        }
+
+        foreach ($delete_produit_commentaires as $supp_com) {
+            $em->remove($supp_com);
+        }
+
 
         $em->remove($delete_produit);
         $em->flush();
@@ -313,7 +370,7 @@ class HomeController extends AbstractController
             return new RedirectResponse('/home_user');
         }
 
-        return $this->render('home/modif_user_image.html.twig', [
+        return $this->render('home/modif_produit_image.html.twig', [
             "form" => $form->createView()
         ]);
     }
@@ -330,7 +387,7 @@ class HomeController extends AbstractController
 
         $form = $this->createForm(UserFormType::class, $modif_user);
 
-        $user_id = $this->getUser()->getId();
+        $user = $this->getUser();
 
 
 
@@ -346,7 +403,7 @@ class HomeController extends AbstractController
 
         return $this->render('home/modif_user.html.twig', [
             "form" => $form->createView(),
-            "user_id" => $user_id
+            "user" => $user
         ]);
     }
 

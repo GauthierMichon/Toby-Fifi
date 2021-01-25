@@ -95,13 +95,17 @@
 				<div class="inscrip">
 					<div>
 
-						<img src="https://via.placeholder.com/150" class="center">
+						<img src="{{ asset('images_produits/' ~ produit.ImageName) }}" class="center">
 
 						<div class="espace">
 							<p>Description :
 								{{ produit.Description }}.
 								{{ produit.Stock }}
 								en stock</p>
+
+							<p>Prix :
+								{{ produit.Prix }}
+								€</p>
 
 
 							<p>Sa durée de livraison est de

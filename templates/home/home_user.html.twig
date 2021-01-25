@@ -13,7 +13,7 @@
 						<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
 					</a>
 				</div>
-				<form class="searchbar" action='/login' method='post'>
+				<form class="searchbar" action='/recherche' method='post'>
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
 				<div class="connex">
 					<form action='/show_panier' method='post'>
@@ -23,6 +23,7 @@
 							</button>
 						</a>
 					</form>
+					<span>Solde : {{user.Solde}} €</span>
 				</div>
 			</header>
 		</div>
@@ -64,7 +65,7 @@
 				<a class="nav-link active" href="/create">Créer un produit</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="/modif_user/{{ user_id }}">Modifier le profil</a>
+				<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="/logout">Se déconnecter</a>

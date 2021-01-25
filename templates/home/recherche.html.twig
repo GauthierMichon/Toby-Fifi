@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Hello HomeController!
 {% endblock %}
+
 {% block body %}
+
 	<div class="example-wrapper">
 		<div class="header" id="myHeader">
 			<header id="containerD">
@@ -12,7 +15,18 @@
 				</div>
 				<form class="searchbar" action='/recherche' method='post'>
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+                {% if app.user %}
 				<div class="connex">
+					<form action='/show_panier' method='post'>
+						<a href="/show_panier">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Panier
+							</button>
+						</a>
+					</form>
+                        <span>Solde : {{user.Solde}} €</span>
+                {% else %}
+                <div class="connex">
 					<form action='/login' method='post'>
 						<a href="/login">
 							<button type="button" class=" btn btn-primary btn-lg">
@@ -21,8 +35,12 @@
 						</a>
 					</form>
 				</div>
+				{% endif %}
+
+				</div>
 			</header>
 		</div>
+
 		<ul class="nav justify-content-center">
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,15 +75,22 @@
 				</ul>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link active" href="#">Home</a>
+				<a class="nav-link active" href="/create">Créer un produit</a>
 			</li>
+            {% if app.user %}
 			<li class="nav-item">
+				<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
+			</li>
+            {% else %}
+            <li class="nav-item">
 				<a class="nav-link" href="register">Inscription</a>
 			</li>
+            {% endif %}
 			<li class="nav-item">
-				<a class="nav-link" href="#">Autre</a>
+				<a class="nav-link" href="/logout">Se déconnecter</a>
 			</li>
 		</ul>
+
 		<div class="espace">
 			<div class="container">
 				<div class="row">
@@ -75,7 +100,7 @@
 								<div class="espace">
 									<div class="card h-100">
 										<a href="/produit/{{ produit.Id }}" class="link">
-											<img src="{{ asset('images_produits/' ~ produit.ImageName) }}"" class="card-img-top" alt="...">
+											<img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
 											<div class="card-body">
 												<h4 class="card-title">{{ produit.nom }}</h4>
 												<p class="card-text">
@@ -98,4 +123,5 @@
 			</div>
 		</div>
 	</div>
+
 {% endblock %}
