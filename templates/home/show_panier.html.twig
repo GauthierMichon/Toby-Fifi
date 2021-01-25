@@ -1,48 +1,169 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Hello HomeController!
+{% endblock %}
 
 {% block body %}
 
-<div class="example-wrapper">
+	<div class="example-wrapper">
+		<div class="header" id="myHeader">
+			<header id="containerD">
+				<div class="centerHeadLogo">
+					<a class="centerHeadLogo" href="/index">
+						<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
+					</a>
+				</div>
+				<form class="searchbar" action='/recherche' method='post'>
+					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+				<div class="connex">
+					<form action='/show_panier' method='post'>
+						<a href="/show_panier">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Panier
+							</button>
+						</a>
+					</form>
+					<span>Solde :
+						{{user.Solde}}
+						€</span>
+				</div>
+			</header>
+		</div>
 
-    <h1>Liste des Produits du Panier</h1>
+		<ul class="nav justify-content-center">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					Catégorie
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<li>
+						<a class="dropdown-item" href="#">Foot</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Rugby</a>
+					</li>
+					<li><hr class="dropdown-divider"></li>
+					<li>
+						<a class="dropdown-item" href="#">Chaussures</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Veste</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Camion</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Tracteur</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Sac à dos</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Voiture</a>
+					</li>
+				</ul>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" href="/create">Créer un produit</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/logout">Se déconnecter</a>
+			</li>
+		</ul>
+		<div class="espace">
+			<h1>Votre panier Toby&Fifi</h1>
+		</div>
+		<div class="espace">
+			<div class="container">
+				<div class="row">
+					{% for produit in produits %}
+						<div class="col-sm-4 col-lg-4">
+							<div class="col">
+								<div class="espace">
+									<div class="card h-100">
+										<a href="/produit/{{ produit.Id }}" class="link">
+											<img src="{{ asset('images_produits/' ~ produit.ImageName) }}" class="card-img-top" alt="...">
+											<div class="card-body">
+												<h4 class="card-title">{{ produit.nom }}</h4>
+												<p class="card-text">
+													Prix :
+													{{ produit.prix }}
+													euros
+													<br>
+													Durée de livraison :
+													{{ produit.DureeLivraison }}
+													jours
+												</p>
+											</a>
+										</div>
+									</div>
+									<div class="inscrip">
+										<a href="/delete_panier/{{ produit.Id }}" class="btn btn-primary">Supprimer du panier</a>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
 
-    {% for produit in produits %}
-    <a href="/produit/{{ produit.id }}" class="link">
-        <div class="container">
-            <div class="card">
-                <div class="item">
-                    <img class="img" src="https://via.placeholder.com/150">
-                    <h2>Nom : {{ produit.nom }}</h2>
-                    <h3>Prix : {{ produit.prix }} €</h3>
-                    <h3>Durée de livraison : {{ produit.DureeLivraison }} jours</h3>
-                    
-                </div>
-            </div>
-            <a href="/delete_panier/{{ produit.Id }}" class="retour">Supprimer du panier</a>
-        </div>
 
-        
-    </a>
-    {% endfor %}
+		<div class="inscrip">
+			<div class="espace">
+				{% if error == true %}
 
-    
+					<h3>
+						{{ error }}
+					</h3>
 
-    {% if error == true %}
+				{% elseif user.solde <= total %}
+					<h3>
+						Prix total :
+						{{ total }}
+					</h3>
 
-        <h3> {{ error }} </h3>
-
-    {% elseif user.solde <= total %}
-        <h3> Prix total : {{ total }} </h3>
-
-        <h3>Vous n'avez pas assez d'argent sur votre compte : 
-        <a href="/modif_user/{{ user.Id }}" class="link">Modifier le profil</a>
-    {% else %}
-        <h3> Prix total : {{ total }} </h3>
-
-        <a href="/payer" class="link">Payer</a>
-    {% endif %}
-
-</div>
+					<h3>Vous n'avez pas assez d'argent sur votre compte :
+						<a href="/modif_user/{{ user.Id }}" class="btn btn-primary">Modifier le profil</a>
+					{% else %}
+						<h3>
+							Prix total :
+							{{ total }}
+							euros
+						</h3>
+					</div>
+					<div class="espace">
+						<a href="/payer" class="btn btn-primary">Payer</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class="espace">
+			<footer class="bg-light text-center text-lg-start">
+				<div class="container p-4">
+					<div class="row">
+						<div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+							<h5 class="text-uppercase">Gauthier Michon</h5>
+							<p>
+								Je suis un élève en Bachelor 2 informatique à Ynov et je suis l'un des fondateurs de Toby&Fifi. Toby&Fifi est un site e-commerce connu mondialement pour sa livraison efficace.
+							</p>
+						</div>
+						<div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+							<h5 class="text-uppercase">Sacha Voisin</h5>
+							<p>
+								Je suis un élève en Bachelor 2 informatique à Ynov et je suis l'un des fondateurs de Toby&Fifi. Toby&Fifi est un site e-commerce connu mondialement pour sa livraison efficace.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+					© 2021 Copyright:
+					<a class="text-dark" href="https://LesCrack.com/">LesCrack.com</a>
+				</div>
+			</footer>
+		</div>
+	</div>
 {% endblock %}
