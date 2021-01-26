@@ -14,39 +14,41 @@
 				</div>
 				<form class="searchbar" action='/recherche' method='post'>
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
-                {% if app.user %}
+				{% if app.user %}
 					{% if role == "ROLE_ADMIN" %}
-					<div class="connex">
-						<form action='/create' method='post'>
-							<a href="/create">
-								<button type="button" class=" btn btn-primary btn-lg">
-									Créer un produit
-								</button>
-							</a>
-						</form>
-					</div>
+						<div class="connex">
+							<form action='/create' method='post'>
+								<a href="/create">
+									<button type="button" class=" btn btn-primary btn-lg">
+										Créer un produit
+									</button>
+								</a>
+							</form>
+						</div>
 					{% else %}
-					<div class="connex">
-						<form action='/show_panier' method='post'>
-							<a href="/show_panier">
-								<button type="button" class=" btn btn-primary btn-lg">
-									Panier
-								</button>
-							</a>
-						</form>
-							<span>Solde : {{user.Solde}} €</span>
+						<div class="connex">
+							<form action='/show_panier' method='post'>
+								<a href="/show_panier">
+									<button type="button" class=" btn btn-primary btn-lg">
+										Panier
+									</button>
+								</a>
+							</form>
+							<span>Solde :
+								{{user.Solde}}
+								€</span>
+						{% endif %}
+					{% else %}
+						<div class="connex">
+							<form action='/login' method='post'>
+								<a href="/login">
+									<button type="button" class=" btn btn-primary btn-lg">
+										Connexion
+									</button>
+								</a>
+							</form>
+						</div>
 					{% endif %}
-                {% else %}
-                <div class="connex">
-					<form action='/login' method='post'>
-						<a href="/login">
-							<button type="button" class=" btn btn-primary btn-lg">
-								Connexion
-							</button>
-						</a>
-					</form>
-				</div>
-				{% endif %}
 
 				</div>
 			</header>
@@ -85,17 +87,17 @@
 					</li>
 				</ul>
 			</li>
-            {% if app.user %}
+			{% if app.user %}
 				{% if role == "ROLE_ADMIN" %}
 					<li class="nav-item">
 						<a class="nav-link active" href="admin_membres">Gérer les membres</a>
 					</li>
 				{% endif %}
-            {% else %}
-            <li class="nav-item">
-				<a class="nav-link" href="register">Inscription</a>
-			</li>
-            {% endif %}
+			{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="register">Inscription</a>
+				</li>
+			{% endif %}
 			<li class="nav-item">
 				<a class="nav-link" href="../logout">Se déconnecter</a>
 			</li>
@@ -114,8 +116,10 @@
 						<div class="espace">
 							<p>Description :
 								{{ produit.Description }}.
+								<br>
+								Il y en a
 								{{ produit.Stock }}
-								en stock</p>
+								en stock.</p>
 
 							<p>Prix :
 								{{ produit.Prix }}
@@ -124,7 +128,7 @@
 
 							<p>Sa durée de livraison est de
 								{{ produit.DureeLivraison }}
-								jours</p>
+								jours.</p>
 
 							<div class="inscrip">
 								{% if app.user %}
@@ -146,34 +150,64 @@
 								</h3>
 
 								{% for commentaire in commentaires %}
-									<div>
+
+									<div class="espace">
 										{{ commentaire.commentaire }}
 									</div>
 								{% endfor %}
 
 								{% if app.user %}
-									<div class="retour">
-										{{ form(form) }}
-									</div>
-								{% endif %}
+									<div class="espace">
+										<div class="retour">
+											{{ form(form) }}
+											</div>
+										</div>
+									{% endif %}
 
-
-									<h3>Moyenne des Notes :
+									<div class="espace">
+										<h3>Moyenne des Notes :
+										</div>
 									</h3>
 
-									<div>
+									<div class="espace">
 										{{ moyenne }}
 									</div>
 
 									{% if app.user %}
-										<div class="retour">
-											{{ form(form_note) }}
+										<div class="espace">
+											<div class="retour">
+												{{ form(form_note) }}
+												</div>
 											</div>
 										{% endif %}
 										<div></div>
 									</div>
 								</div>
 							</div>
+						</div>
+						<div class="espace">
+							<footer class="bg-light text-center text-lg-start">
+								<div class="container p-4">
+									<div class="row">
+										<div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+											<h5 class="text-uppercase">Gauthier Michon</h5>
+											<p>
+												Je suis un élève en Bachelor 2 informatique à Ynov et je suis l'un des fondateurs de Toby&Fifi. Toby&Fifi est un site e-commerce connu mondialement pour sa livraison efficace.
+											</p>
+										</div>
+										<div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+											<h5 class="text-uppercase">Sacha Voisin</h5>
+											<p>
+												Je suis un élève en Bachelor 2 informatique à Ynov et je suis l'un des fondateurs de Toby&Fifi. Toby&Fifi est un site e-commerce connu mondialement pour sa livraison efficace.
+											</p>
+										</div>
+									</div>
+								</div>
+								<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+									© 2021 Copyright:
+									<a class="text-dark" href="https://LesCrack.com/">LesCrack.com</a>
+								</div>
+							</footer>
 						</div>
 					</div>
 				{% endblock %}
