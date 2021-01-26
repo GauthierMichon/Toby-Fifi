@@ -700,7 +700,7 @@ class HomeController extends AbstractController
         $em->flush();
 
 
-        $to = "gauthier.michon@gmail.com" ;
+        $to = $user->getEmail() ;
         $subject = "Toby&Fifi - Payement effectué" ;
         $message = "Vous avez payé $total €. Merci de votre achat." ;
         $headers = "From: projetwebynov@gmail.com";
@@ -750,14 +750,28 @@ class HomeController extends AbstractController
 
 
         $user = $this->getUser();
-        $role = $user->getRoles();
+        
+
+
+        if (!empty($user)) {
+
+            $role = $user->getRoles();
+
+            return $this->render('home/categorie.html.twig', [
+                "produits" => $Produits,
+                "user" => $user,
+                "role" => $role[0]
+            ]);
+        }
+
+        else {
+            return $this->render('home/categorie.html.twig', [
+                "produits" => $Produits,
+            ]);
+        }
 
         
 
-        return $this->render('home/categorie.html.twig', [
-            "produits" => $Produits,
-            "user" => $user,
-            "role" => $role[0]
-        ]);
+        
     }
 }
