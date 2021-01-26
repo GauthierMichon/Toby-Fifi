@@ -74,22 +74,27 @@
 		<div class="espace">
 			<h1>Modification de votre profil</h1>
 		</div>
-		<img src="{{ asset('images_users/' ~ user.ImageName) }}">
 		<div class="container">
 			<div class="row justify-content-md-center">
 				<div class="inscrip">
-					<div class="retour">
-						{{ form_start(form)}}
-						{{ form_row(form.email) }}
-						{{ form_row(form.nom) }}
-						{{ form_row(form.prenom) }}
-						{{ form_row(form.date_naissance) }}
-						{{ form_row(form.solde) }}
-
-						<button type="submit" class="btn">Modifier</button>
-						{{ form_end(form) }}
-						<div class="espace">
-							<a href="/modif_user_image/{{ user.Id }}" class="btn btn-primary">Modifier la photo de profil</a>
+					<img src="{{ asset('images_users/' ~ user.ImageName) }}" class="center">
+					<div class="espace">
+						<div class="retour">
+							{{ form_start(form)}}
+							{{ form_row(form.email) }}
+							{{ form_row(form.nom) }}
+							{{ form_row(form.prenom) }}
+							{{ form_row(form.solde) }}
+							<div class="centrage">
+								{{ form_row(form.date_naissance) }}
+							</div>
+							<div class="centrage">
+								<button type="submit" class="btn btn-primary">Modifier</button>
+							</div>
+							{{ form_end(form) }}
+							<div class="centrage">
+								<a href="/modif_user_image/{{ user.Id }}" class="btn btn-primary">Modifier la photo de profil</a>
+							</div>
 						</div>
 					</div>
 				</div>

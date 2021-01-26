@@ -4,55 +4,102 @@
 {% endblock %}
 
 {% block body %}
-
-	<div class="header" id="myHeader">
-		<header id="containerD">
-			<div class="centerHeadLogo">
-				<a class="centerHeadLogo" href="/index">
-					<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
-				</a>
-			</div>
-			<form class="searchbar" action='/login' method='post'>
-				<input type='text' name='rechercher' placeholder="Rechercher"/></form>
-			<div class="connex">
-				<form action='/login' method='post'>
-					<a href="/login">Connexion</a>
-				</form>
-			</div>
-		</header>
-	</div>
-
-	<form method="post" class="centre_formulaire_login">
-		<div class="mb-3">
-			<label for="inputEmail" class="form-label">Email</label>
-			<input type="email" value="{{ last_username }}" name="email" class="form-control" id="inputEmail" placeholder="email@example.com">
-			<label for="inputPassword" class="form-label">Password</label>
-			<input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
-
-			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+	<div class="example-wrapper">
+		<div class="header" id="myHeader">
+			<header id="containerD">
+				<div class="centerHeadLogo">
+					<a class="centerHeadLogo" href="/index">
+						<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
+					</a>
+				</div>
+				<form class="searchbar" action='/recherche' method='post'>
+					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+				<div class="connex">
+					<form action='/login' method='post'>
+						<a href="/login">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Connexion
+							</button>
+						</a>
+					</form>
+				</div>
+			</header>
 		</div>
-		<button type="submit" class="btn btn-primary">Sign in</button>
-		
-		{% if error %}
-			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-		{% endif %}
+		<ul class="nav justify-content-center">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					Catégorie
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<li>
+						<a class="dropdown-item" href="#">Foot</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Rugby</a>
+					</li>
+					<li><hr class="dropdown-divider"></li>
+					<li>
+						<a class="dropdown-item" href="#">Chaussures</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Veste</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Camion</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Tracteur</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Sac à dos</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Voiture</a>
+					</li>
+				</ul>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" href="#">Home</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="register">Inscription</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Autre</a>
+			</li>
+		</ul>
 
-		{% if app.user %}
+		<form method="post" class="centre_formulaire_login">
 			<div class="mb-3">
-				You are logged in as
-				{{ app.user.username }},
-				<a href="{{ path('app_logout') }}">Logout</a>
-			</div>
-		{% endif %}
-	</form>
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
+				<label for="inputEmail" class="form-label">Email</label>
+				<input type="email" value="{{ last_username }}" name="email" class="form-control" id="inputEmail" placeholder="email@example.com">
+				<label for="inputPassword" class="form-label">Password</label>
+				<input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+			</div>
+			<button type="submit" class="btn btn-primary">Sign in</button>
+
+			{% if error %}
+				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			{% endif %}
+
+			{% if app.user %}
+				<div class="mb-3">
+					You are logged in as
+					{{ app.user.username }},
+					<a href="{{ path('app_logout') }}">Logout</a>
+				</div>
+			{% endif %}
+		</form>
+		{#
+		        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+		        See https://symfony.com/doc/current/security/remember_me.html
+		
+		        <div class="checkbox mb-3">
+		            <label>
+		                <input type="checkbox" name="_remember_me"> Remember me
+		            </label>
+		        </div>
+		    #}
 	{% endblock %}

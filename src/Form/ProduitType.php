@@ -18,14 +18,42 @@ class ProduitType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('stock', IntegerType::class)
-            ->add('prix', MoneyType::class)
-            ->add('duree_livraison', IntegerType::class)
-            ->add('ImageName', FileType::class)
-            ->add("submit", SubmitType::class)
-        ;
+            ->add('nom', TextType::class, [
+                'attr' => [
+                    "class" => "form-control"
+                ]
+            ])
+            ->add('description', TextareaType::class, [
+                'attr' => [
+                    "class" => "form-control"
+                ]
+            ])
+            ->add('stock', IntegerType::class, [
+                'attr' => [
+                    "class" => "form-control"
+                ]
+            ])
+            ->add('prix', MoneyType::class, [
+                'attr' => [
+                    "class" => "form-control"
+                ]
+            ])
+            ->add('duree_livraison', IntegerType::class, [
+                'attr' => [
+                    "class" => "form-control"
+                ]
+            ])
+            ->add('ImageName', FileType::class, [
+                'attr' => [
+                    "class" => "centrage"
+                ]
+            ])
+            ->add("submit", SubmitType::class, [
+                'attr' => [
+                    "class" => "btn btn-primary centrage"
+
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
