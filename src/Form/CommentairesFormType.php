@@ -14,9 +14,17 @@ class CommentairesFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('commentaire', TextareaType::class)
-            ->add("submit", SubmitType::class)
-        ;
+            ->add('commentaire', TextareaType::class, [
+                'attr' => [
+                    "class" => "form-control"
+                ]
+            ])
+            ->add("submit", SubmitType::class, [
+                'attr' => [
+                    "class" => "btn btn-primary centrage"
+
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

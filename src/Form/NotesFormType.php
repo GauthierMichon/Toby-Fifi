@@ -17,8 +17,12 @@ class NotesFormType extends AbstractType
             ->add('note', IntegerType::class, array(
                 'attr' => array('min' => 1, 'max' => 5)
             ))
-            ->add("submit", SubmitType::class)    
-        ;
+            ->add("submit", SubmitType::class, [
+                'attr' => [
+                    "class" => "btn btn-primary centrage"
+
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
