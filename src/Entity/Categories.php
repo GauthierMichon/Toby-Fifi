@@ -44,12 +44,12 @@ class Categories
         return $this;
     }
 
-    public function getNomCategorie(): ?string
+    public function getNomCategorie()
     {
         return $this->nom_categorie;
     }
 
-    public function setNomCategorie(string $nom_categorie): self
+    public function setNomCategorie($nom_categorie): self
     {
         $this->nom_categorie = $nom_categorie;
 

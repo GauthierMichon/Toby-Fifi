@@ -65,23 +65,25 @@
 				<a class="nav-link active" href="../logout">Se déconnecter</a>
 			</li>
 		</ul>
-
 		<div class="espace">
-			<h1>Modification de la photo du produit</h1>
+			<h1>Modification du produit</h1>
 		</div>
+
+		
+
 		<div class="container">
 			<div class="row justify-content-md-center">
-				<img src="{{ asset('images_produits/' ~ produit) }}" class="center-block">
+				<img src="{{ asset('images_produits/' ~ produit.ImageName) }}" class="center-block">
 				<div class="inscrip">
 					<div class="retour">
 						{{ form(form) }}
 						</div>
-					<div class="espace">
-						<a href="/modif/{{ id }}" class="btn btn-primary">Modifier le Produit</a>
-					</div>
-					<div class="espace">
-						<a href="/modif_produit_categories/{{ id }}" class="btn btn-primary">Ajouter des catégories au produit</a>
-					</div>
+                        <div class="espace">
+							<a href="/modif/{{ id }}" class="btn btn-primary">Modifier le Produit</a>
+						</div>
+						<div class="espace">
+							<a href="/modif_produit_image/{{ id }}" class="btn btn-primary">Modifier la photo du produit</a>
+						</div>
 					</div>
 				</div>
 			</div>

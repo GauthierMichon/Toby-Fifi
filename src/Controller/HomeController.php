@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Categories;
 use App\Entity\Commentaires;
 use App\Entity\Notes;
 use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\User;
 use App\Entity\Ventes;
+use App\Form\CategoriesFormType;
 use App\Form\CommentairesFormType;
 use App\Form\ModifProduitType;
 use App\Form\NotesFormType;
@@ -413,6 +415,45 @@ class HomeController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/modif_produit_categories/{id}", name="modif_produit_categories")
+     */
+    public function modif_produit_categories(int $id, Request $request, EntityManagerInterface $em)
+    {
+        
+        $categorie = new Categories();
+        $user = $this->getUser();
+        $produit = $em->getRepository(Produit::class)->find($id);
+
+        $form = $this->createForm(CategoriesFormType::class, $categorie);
+        
+
+        $categorie->setIdProduit($id);
+
+        $form->handleRequest($request);
+
+        
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $categorie->setNomCategorie($categorie->getNomCategorie()->getNom());
+
+            $em->persist($categorie);
+            $em->flush();
+
+            return new RedirectResponse('/modif/'.$id);
+        }
+
+        return $this->render('home/modif_produit_categories.html.twig', [
+            "form" => $form->createView(),
+            "id" => $id,
+            "user" => $user,
+            "produit" => $produit
+        ]);
+    }
+
+
+
     /**
      * @Route("/modif_produit_image/{id}", name="modif_produit_image")
      */
@@ -448,7 +489,8 @@ class HomeController extends AbstractController
 
         return $this->render('home/modif_produit_image.html.twig', [
             "form" => $form->createView(),
-            "produit" => $ancienne_image
+            "produit" => $ancienne_image,
+            "id" => $id
         ]);
     }
 
@@ -676,6 +718,46 @@ class HomeController extends AbstractController
             "produits" => $produits,
             "user" => $user,
             "total" => $total
+        ]);
+    }
+
+
+    /**
+     * @Route("/categorie/{categorie}", name="categorie")
+     */
+    public function categorie(string $categorie, EntityManagerInterface $em)
+    {
+
+        $liste_id = [];
+        $Produits = [];
+
+        $categorie_selection = $this->getDoctrine()
+                ->getRepository(Categories::class)
+                ->findBy(array('nom_categorie'=> $categorie));
+
+        foreach ($categorie_selection as $id_prod) {
+            array_push($liste_id, $id_prod->getIdProduit());
+        }
+
+
+        foreach ($liste_id as $id) {
+            $Produit = $this->getDoctrine()
+                ->getRepository(Produit::class)
+                ->findBy(array('id'=> $id));
+
+            array_push($Produits, $Produit[0]);
+        }
+
+
+        $user = $this->getUser();
+        $role = $user->getRoles();
+
+        
+
+        return $this->render('home/categorie.html.twig', [
+            "produits" => $Produits,
+            "user" => $user,
+            "role" => $role[0]
         ]);
     }
 }

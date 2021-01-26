@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!
+{% endblock %}
+
+{% block body %}
+
+	<div class="example-wrapper">
+		<div class="header" id="myHeader">
+			<header id="containerD">
+				<div class="centerHeadLogo">
+					<a class="centerHeadLogo" href="/index">
+						<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
+					</a>
+				</div>
+				<form class="searchbar" action='/recherche' method='post'>
+					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+                {% if app.user %}
+					{% if role == "ROLE_ADMIN" %}
+					<div class="connex">
+						<form action='/create' method='post'>
+							<a href="/create">
+								<button type="button" class=" btn btn-primary btn-lg">
+									Créer un produit
+								</button>
+							</a>
+						</form>
+					</div>
+					{% else %}
+					<div class="connex">
+						<form action='/show_panier' method='post'>
+							<a href="/show_panier">
+								<button type="button" class=" btn btn-primary btn-lg">
+									Panier
+								</button>
+							</a>
+						</form>
+							<span>Solde : {{user.Solde}} €</span>
+					{% endif %}
+                {% else %}
+                <div class="connex">
+					<form action='/login' method='post'>
+						<a href="/login">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Connexion
+							</button>
+						</a>
+					</form>
+				</div>
+				{% endif %}
+
+				</div>
+			</header>
+		</div>
+
+		<ul class="nav justify-content-center">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					Catégorie
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<li>
+						<a class="dropdown-item" href="#">Foot</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Rugby</a>
+					</li>
+					<li><hr class="dropdown-divider"></li>
+					<li>
+						<a class="dropdown-item" href="#">Chaussures</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Veste</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Camion</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Tracteur</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Sac à dos</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Voiture</a>
+					</li>
+				</ul>
+			</li>
+            {% if app.user %}
+				{% if role == "ROLE_ADMIN" %}
+					<li class="nav-item">
+						<a class="nav-link active" href="admin_membres">Gérer les membres</a>
+					</li>
+				{% endif %}
+            {% else %}
+            <li class="nav-item">
+				<a class="nav-link" href="register">Inscription</a>
+			</li>
+            {% endif %}
+			<li class="nav-item">
+				<a class="nav-link" href="/logout">Se déconnecter</a>
+			</li>
+		</ul>
+
+		<div class="espace">
+			<div class="container">
+				<div class="row">
+					{% for produit in produits %}
+						<div class="col-sm-4 col-lg-4">
+							<div class="col">
+								<div class="espace">
+									<div class="card h-100">
+										<a href="/produit/{{ produit.Id }}" class="link">
+											<img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+											<div class="card-body">
+												<h4 class="card-title">{{ produit.nom }}</h4>
+												<p class="card-text">
+													Prix :
+													{{ produit.prix }}
+													euros
+													<br>
+													Durée de livraison :
+													{{ produit.DureeLivraison }}
+													jours
+												</p>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
