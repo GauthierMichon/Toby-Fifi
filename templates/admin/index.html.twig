@@ -18,40 +18,48 @@
 							</button>
 						</a>
 					</form>
+				</div>
 			</header>
+			<ul class="nav justify-content-center">
+				<li class="nav-item">
+					<a class="nav-link active" href="admin_produits">Gérer les produits</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="admin_membres">Gérer les membres</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="logout">Se déconnecter</a>
+				</li>
+			</ul>
+			<div class="espace">
+				<h1>Statistiques Globales du site :
+				</div>
+			</h1>
+			<div class="espace">
+				<div class="container">
+					<table class="table">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Nombre de ventes des 7 derniers jours</th>
+								<th scope="col">Revenus des 7 derniers jours</th>
+								<th scope="col">Nombre de ventes totales</th>
+								<th scope="col">Revenus totaux</th>
+								<th scope="col">Nombre de membre du site</th>
+							</tr>
+						</thead>
+						<tr>
+							<th scope="row">1</th>
+							<td>{{ total_ventes_7 }}</td>
+							<td>{{ total_prix_7 }}
+								€</td>
+							<td>{{ total_ventes }}</td>
+							<td>{{ total_prix }}
+								€</td>
+							<td>{{ total_membres }}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
-		<ul class="nav justify-content-center">
-			<li class="nav-item">
-				<a class="nav-link active" href="admin_produits">Gérer les produits</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link active" href="admin_membres">Gérer les membres</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link active" href="logout">Se déconnecter</a>
-			</li>
-		</ul>
-
-		<h1>Statistiques Globales du site : </h1>
-
-
-		<table>
-			<tr>
-				<td>Nombre de ventes des 7 derniers jours</td>
-				<td>Revenus des 7 derniers jours</td>
-				<td>Nombre de ventes totales</td>
-				<td>Revenus totaux</td>
-				<td>Nombre de membre du site</td>
-			</tr>
-
-			<tr>
-				<td>{{ total_ventes_7 }}</td>
-				<td>{{ total_prix_7 }} €</td>
-				<td>{{ total_ventes }}</td>
-				<td>{{ total_prix }} €</td>
-				<td>{{ total_membres }}</td>
-			</tr>
-		</table>
-
-	</div>
-{% endblock %}
+	{% endblock %}
