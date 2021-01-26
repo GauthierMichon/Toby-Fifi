@@ -12,11 +12,21 @@
 						<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
 					</a>
 				</div>
-				<form class="searchbar" action='/login' method='post'>
+				<form class="searchbar" action='/recherche' method='post'>
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
-				<div class="connex">
-
-					{% if app.user %}
+                {% if app.user %}
+					{% if role == "ROLE_ADMIN" %}
+					<div class="connex">
+						<form action='/create' method='post'>
+							<a href="/create">
+								<button type="button" class=" btn btn-primary btn-lg">
+									Créer un produit
+								</button>
+							</a>
+						</form>
+					</div>
+					{% else %}
+					<div class="connex">
 						<form action='/show_panier' method='post'>
 							<a href="/show_panier">
 								<button type="button" class=" btn btn-primary btn-lg">
@@ -24,18 +34,24 @@
 								</button>
 							</a>
 						</form>
-					{% else %}
-						<form action='/login' method='post'>
-							<a href="/login">
-								<button type="button" class=" btn btn-primary btn-lg">
-									Connexion
-								</button>
-							</a>
-						</form>
+							<span>Solde : {{user.Solde}} €</span>
 					{% endif %}
+                {% else %}
+                <div class="connex">
+					<form action='/login' method='post'>
+						<a href="/login">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Connexion
+							</button>
+						</a>
+					</form>
+				</div>
+				{% endif %}
+
 				</div>
 			</header>
 		</div>
+
 		<ul class="nav justify-content-center">
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,22 +85,20 @@
 					</li>
 				</ul>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link active" href="#">Home</a>
+            {% if app.user %}
+				{% if role == "ROLE_ADMIN" %}
+					<li class="nav-item">
+						<a class="nav-link active" href="admin_membres">Gérer les membres</a>
+					</li>
+				{% endif %}
+            {% else %}
+            <li class="nav-item">
+				<a class="nav-link" href="register">Inscription</a>
 			</li>
+            {% endif %}
 			<li class="nav-item">
-				<a class="nav-link" href="#">Inscription</a>
+				<a class="nav-link" href="/logout">Se déconnecter</a>
 			</li>
-			{% if app.user %}
-				<li class="nav-item">
-					<a class="nav-link" href="/logout">Se déconnecter</a>
-				</li>
-			{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="#">Autre</a>
-				</li>
-			{% endif %}
-
 		</ul>
 
 		<div class="espace">
@@ -114,11 +128,17 @@
 
 							<div class="inscrip">
 								{% if app.user %}
-									<a href="/add_panier/{{ produit.Id }}" class="btn btn-primary">Ajouter au panier</a>
+									{% if role == "ROLE_ADMIN" %}
+										<a href="/modif/{{ produit.Id }}" class="btn btn-primary">Modifier le produit</a>
+										<a href="/delete/{{ produit.Id }}" class="btn btn-primary">Supprimer le produit</a>
+										<a href="/admin" class="btn btn-primary">Retour</a>
+									{% else %}
+										<a href="/add_panier/{{ produit.Id }}" class="btn btn-primary">Ajouter au panier</a>
+										<a href="/home" class="btn btn-primary">Retour</a>
+									{% endif %}
+								{% else %}
+									<a href="/home" class="btn btn-primary">Retour</a>
 								{% endif %}
-								<a href="/modif/{{ produit.Id }}" class="btn btn-primary">Modifier le produit</a>
-								<a href="/delete/{{ produit.Id }}" class="btn btn-primary">Supprimer le produit</a>
-								<a href="/" class="btn btn-primary">Retour</a>
 							</div>
 
 							<div class="espace">
@@ -134,8 +154,8 @@
 								{% if app.user %}
 									<div class="retour">
 										{{ form(form) }}
-										</div>
-									{% endif %}
+									</div>
+								{% endif %}
 
 
 									<h3>Moyenne des Notes :

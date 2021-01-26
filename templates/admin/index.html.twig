@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello HomeController!
+{% endblock %}
+{% block body %}
+	<div class="example-wrapper">
+		<div class="header" id="myHeader">
+			<header id="containerD">
+				<div class="centerHeadLogo">
+					<a class="centerHeadLogo" href="/index">
+						<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
+					</a>
+				</div>
+				<div class="connex">
+					<form action='/create' method='post'>
+						<a href="/create">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Créer un produit
+							</button>
+						</a>
+					</form>
+			</header>
+		</div>
+		<ul class="nav justify-content-center">
+			<li class="nav-item">
+				<a class="nav-link active" href="admin_produits">Gérer les produits</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" href="admin_membres">Gérer les membres</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" href="logout">Se déconnecter</a>
+			</li>
+		</ul>
+
+		<h1>Statistiques Globales du site : </h1>
+
+
+		<table>
+			<tr>
+				<td>Nombre de ventes des 7 derniers jours</td>
+				<td>Revenus des 7 derniers jours</td>
+				<td>Nombre de ventes totales</td>
+				<td>Revenus totaux</td>
+				<td>Nombre de membre du site</td>
+			</tr>
+
+			<tr>
+				<td>{{ total_ventes_7 }}</td>
+				<td>{{ total_prix_7 }} €</td>
+				<td>{{ total_ventes }}</td>
+				<td>{{ total_prix }} €</td>
+				<td>{{ total_membres }}</td>
+			</tr>
+		</table>
+
+	</div>
+{% endblock %}

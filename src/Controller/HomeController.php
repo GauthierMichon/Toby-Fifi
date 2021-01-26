@@ -36,30 +36,26 @@ class HomeController extends AbstractController
             ->getRepository(Produit::class)
             ->findAll();
 
-        return $this->render('home/index.html.twig', [
-            'produits' => $Produits,
-        ]);
-    }
-
-    /**
-     * @Route("/home_user", name="home_user")
-     */
-    public function home_user()
-    {
-
-        $Produits = $this->getDoctrine()
-            ->getRepository(Produit::class)
-            ->findAll();
-
         $user = $this->getUser();
 
+        if ($user->getRoles()[0] == "ROLE_ADMIN") {
+            return new RedirectResponse('/admin');
+        }
 
-        return $this->render('home/home_user.html.twig', [
-            'produits' => $Produits,
-            'user' => $user,
-        ]);
+
+        if (!empty($user)) {
+            return $this->render('home/index.html.twig', [
+                'produits' => $Produits,
+                "user" => $user
+            ]);
+        }
+
+        else {
+            return $this->render('home/index.html.twig', [
+                'produits' => $Produits,
+            ]);
+        }
     }
-
 
     /**
      * @Route("/recherche", name="recherche")
@@ -80,12 +76,14 @@ class HomeController extends AbstractController
         $Produits = $query->getResult();
 
         $user = $this->getUser();
+        $role = $user->getRoles();
 
         if (!empty($user)) {
             return $this->render('home/recherche.html.twig', [
                 'produits' => $Produits,
                 "recherche" => $recherche,
-                "user" => $user
+                "user" => $user,
+                "role" => $role[0]
             ]);
         }
 
@@ -105,6 +103,7 @@ class HomeController extends AbstractController
     {   
 
         $user = $this->getUser();
+        $role = $user->getRoles();
         $nb_note = 0;
         $total_note = 0;
         $moyenne = null;
@@ -216,7 +215,8 @@ class HomeController extends AbstractController
             "form" => $form->createView(),
             "form_note" => $form_note->createView(),
             "commentaires" => $commentaires,
-            "moyenne" => $moyenne
+            "moyenne" => $moyenne,
+            "role" => $role[0]
         ]);
     }
 
@@ -243,7 +243,7 @@ class HomeController extends AbstractController
             $em->persist($produit);
             $em->flush();
 
-            return new RedirectResponse('/home_user');
+            return new RedirectResponse('/home');
         }
 
         return $this->render('home/create.html.twig', [
@@ -261,6 +261,7 @@ class HomeController extends AbstractController
         $delete_produit_panier = $em->getRepository(Panier::class)->findBy(array('id_produit'=> $id));
         $delete_produit_notes = $em->getRepository(Notes::class)->findBy(array('id_produit'=> $id));
         $delete_produit_commentaires = $em->getRepository(Commentaires::class)->findBy(array('id_produit'=> $id));
+        $delete_produit_ventes = $em->getRepository(Ventes::class)->findBy(array('id_produit'=> $id));
         
 
         unlink("images_produits/".$delete_produit->getImageName());
@@ -277,14 +278,62 @@ class HomeController extends AbstractController
             $em->remove($supp_com);
         }
 
+        foreach ($delete_produit_ventes as $supp_vente) {
+            $em->remove($supp_vente);
+        }
+
 
         $em->remove($delete_produit);
         $em->flush();
 
-        return new RedirectResponse('/home_user');
+        return new RedirectResponse('/home');
 
         return $this->render('home/delete.html.twig', []);
     }
+
+
+    /**
+     * @Route("/delete_user/{id}", name="delete_post")
+     */
+    public function delete_user(int $id, Request $request, EntityManagerInterface $em)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $delete_user = $em->getRepository(User::class)->find($id);
+        $delete_user_panier = $em->getRepository(Panier::class)->findBy(array('id_user'=> $id));
+        $delete_user_notes = $em->getRepository(Notes::class)->findBy(array('id_user'=> $id));
+        $delete_user_commentaires = $em->getRepository(Commentaires::class)->findBy(array('id_user'=> $id));
+        $delete_user_ventes = $em->getRepository(Ventes::class)->findBy(array('id_user'=> $id));
+        
+
+        unlink("images_users/".$delete_user->getImageName());
+
+        foreach ($delete_user_panier as $supp_panier) {
+            $em->remove($supp_panier);
+        }
+
+        foreach ($delete_user_notes as $supp_note) {
+            $em->remove($supp_note);
+        }
+
+        foreach ($delete_user_commentaires as $supp_com) {
+            $em->remove($supp_com);
+        }
+
+        foreach ($delete_user_ventes as $supp_vente) {
+            $em->remove($supp_vente);
+        }
+
+
+        $em->remove($delete_user);
+        $em->flush();
+
+        return new RedirectResponse('/home');
+
+        return $this->render('home/delete_user.html.twig', []);
+    }
+
+
+
 
     /**
      * @Route("/delete_panier/{id}", name="delete_panier")
@@ -328,12 +377,13 @@ class HomeController extends AbstractController
             $em->persist($modif_produit);
             $em->flush();
 
-            return new RedirectResponse('/home_user');
+            return new RedirectResponse('/home');
         }
 
         return $this->render('home/modif.html.twig', [
             "form" => $form->createView(),
-            "id" => $id
+            "id" => $id,
+            "produit" => $modif_produit
         ]);
     }
 
@@ -367,11 +417,12 @@ class HomeController extends AbstractController
             $em->persist($modif_produit);
             $em->flush();
 
-            return new RedirectResponse('/home_user');
+            return new RedirectResponse('/home');
         }
 
         return $this->render('home/modif_produit_image.html.twig', [
-            "form" => $form->createView()
+            "form" => $form->createView(),
+            "produit" => $ancienne_image
         ]);
     }
 
@@ -398,7 +449,7 @@ class HomeController extends AbstractController
             $em->persist($modif_user);
             $em->flush();
 
-            return new RedirectResponse('/home_user');
+            return new RedirectResponse('/home');
         }
 
         return $this->render('home/modif_user.html.twig', [
@@ -438,11 +489,12 @@ class HomeController extends AbstractController
             $em->persist($modif_user);
             $em->flush();
 
-            return new RedirectResponse('/home_user');
+            return new RedirectResponse('/home');
         }
 
         return $this->render('home/modif_user_image.html.twig', [
-            "form" => $form->createView()
+            "form" => $form->createView(),
+            "image" => $ancienne_image
         ]);
     }
 
@@ -461,7 +513,7 @@ class HomeController extends AbstractController
         $em->flush();
 
 
-        return new RedirectResponse('/home_user');
+        return new RedirectResponse('/home');
 
         return $this->render('home/add_panier.html.twig', [
             
@@ -591,7 +643,7 @@ class HomeController extends AbstractController
 
 
 
-        return new RedirectResponse('/home_user');
+        return new RedirectResponse('/home');
 
 
         return $this->render('home/show_panier.html.twig', [

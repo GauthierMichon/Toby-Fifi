@@ -1,20 +1,17 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Hello HomeController!
 {% endblock %}
-
 {% block body %}
-
 	<div class="example-wrapper">
 		<div class="header" id="myHeader">
 			<header id="containerD">
 				<div class="centerHeadLogo">
 					<a class="centerHeadLogo" href="/index">
-						<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
+						<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
 					</a>
 				</div>
-				<form class="searchbar" action='/recherche' method='post'>
-					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+				<form class="searchbar" action='/recherche_users' method='post'>
+					<input type='text' name='rechercher_users' placeholder="Rechercher l'email des Membres"/></form>
 				<div class="connex">
 					<form action='/create' method='post'>
 						<a href="/create">
@@ -59,25 +56,36 @@
 				</ul>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link active" href="admin_membres">Gérer les membres</a>
+				<a class="nav-link active" href="admin_produits">Gérer les produits</a>
 			</li>
-			<li class="nav-item">
+            <li class="nav-item">
 				<a class="nav-link active" href="logout">Se déconnecter</a>
 			</li>
 		</ul>
-
 		<div class="espace">
-			<h1>Modification de la photo du produit</h1>
-		</div>
-		<div class="container">
-			<div class="row justify-content-md-center">
-				<img src="{{ asset('images_produits/' ~ produit) }}" class="center-block">
-				<div class="inscrip">
-					<div class="retour">
-						{{ form(form) }}
+			<div class="container">
+				<div class="row">
+					{% for membre in Users %}
+						<div class="col-sm-4 col-lg-4">
+							<div class="col">
+								<div class="espace">
+									<div class="card h-100">
+										<a href="/membre/{{ membre.Id }}" class="link">
+											<img src="{{ asset('images_users/' ~ membre.ImageName) }}" class="card-img-top" alt="...">
+											<div class="card-body">
+												<h4 class="card-title">{{ membre.nom }} {{ membre.prenom }}</h4>
+												<p class="card-text">
+													{{ membre.email }}
+												</p>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
+					{% endfor %}
 				</div>
 			</div>
 		</div>
-	{% endblock %}
+	</div>
+{% endblock %}

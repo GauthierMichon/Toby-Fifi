@@ -4,7 +4,6 @@
 {% endblock %}
 
 {% block body %}
-
 	<div class="example-wrapper">
 		<div class="header" id="myHeader">
 			<header id="containerD">
@@ -13,8 +12,8 @@
 						<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
 					</a>
 				</div>
-				<form class="searchbar" action='/recherche' method='post'>
-					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+				<form class="searchbar" action='/recherche_users' method='post'>
+					<input type='text' name='rechercher_users' placeholder="Rechercher l'email des Membres"/></form>
 				<div class="connex">
 					<form action='/create' method='post'>
 						<a href="/create">
@@ -59,25 +58,39 @@
 				</ul>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link active" href="admin_membres">Gérer les membres</a>
+				<a class="nav-link active" href="admin_produits">Gérer les produits</a>
 			</li>
-			<li class="nav-item">
+            <li class="nav-item">
 				<a class="nav-link active" href="logout">Se déconnecter</a>
 			</li>
 		</ul>
 
 		<div class="espace">
-			<h1>Modification de la photo du produit</h1>
+			<h1>{{ membre.nom }} {{ membre.prenom }}</h1>
 		</div>
 		<div class="container">
 			<div class="row justify-content-md-center">
-				<img src="{{ asset('images_produits/' ~ produit) }}" class="center-block">
 				<div class="inscrip">
-					<div class="retour">
-						{{ form(form) }}
+					<div>
+
+						<img src="{{ asset('images_users/' ~ membre.ImageName) }}" class="center-block">
+
+						<div class="espace">
+							<p>Email :
+								{{ membre.Email }}</p>
+
+							<p>Date de naissance :
+								{{ membre.DateNaissance|date("d-m-Y") }}</p>
+
+							<p>Solde :
+								{{ membre.Solde }} €</p>
+
+							<div class="inscrip">
+                                <a href="/modif_user/{{ membre.Id }}" class="btn btn-primary">Modifier le membre</a>
+                                <a href="/delete_user/{{ membre.Id }}" class="btn btn-primary">Supprimer le membre</a>
+                                <a href="/admin" class="btn btn-primary">Retour</a>
+							</div>
+
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-	{% endblock %}
+				{% endblock %}

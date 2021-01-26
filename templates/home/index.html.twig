@@ -12,7 +12,18 @@
 				</div>
 				<form class="searchbar" action='/recherche' method='post'>
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
+				{% if app.user %}
 				<div class="connex">
+					<form action='/show_panier' method='post'>
+						<a href="/show_panier">
+							<button type="button" class=" btn btn-primary btn-lg">
+								Panier
+							</button>
+						</a>
+					</form>
+                        <span>Solde : {{user.Solde}} €</span>
+                {% else %}
+                <div class="connex">
 					<form action='/login' method='post'>
 						<a href="/login">
 							<button type="button" class=" btn btn-primary btn-lg">
@@ -21,6 +32,7 @@
 						</a>
 					</form>
 				</div>
+				{% endif %}
 			</header>
 		</div>
 		<ul class="nav justify-content-center">
@@ -59,9 +71,15 @@
 			<li class="nav-item">
 				<a class="nav-link active" href="#">Home</a>
 			</li>
+			{% if app.user %}
 			<li class="nav-item">
+				<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
+			</li>
+            {% else %}
+            <li class="nav-item">
 				<a class="nav-link" href="register">Inscription</a>
 			</li>
+            {% endif %}
 			<li class="nav-item">
 				<a class="nav-link" href="#">Autre</a>
 			</li>

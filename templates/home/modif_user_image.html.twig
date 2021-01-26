@@ -13,20 +13,18 @@
 						<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
 					</a>
 				</div>
-				<form class="searchbar" action='/login' method='post'>
+				<form class="searchbar" action='/recherche' method='post'>
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
 				<div class="connex">
-					<form action='/show_panier' method='post'>
-						<a href="/show_panier">
+					<form action='/create' method='post'>
+						<a href="/create">
 							<button type="button" class=" btn btn-primary btn-lg">
-								Panier
+								Créer un produit
 							</button>
 						</a>
 					</form>
-				</div>
 			</header>
 		</div>
-
 		<ul class="nav justify-content-center">
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -61,15 +59,13 @@
 				</ul>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link active" href="/create">Créer un produit</a>
+				<a class="nav-link active" href="admin_membres">Gérer les membres</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Accueil</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/logout">Se déconnecter</a>
+				<a class="nav-link active" href="logout">Se déconnecter</a>
 			</li>
 		</ul>
+		<div class="espace">
 
 		<div class="espace">
 			<h1>Modification de votre photo</h1>
@@ -77,6 +73,7 @@
 		<div class="container">
 			<div class="row justify-content-md-center">
 				<div class="inscrip">
+					<img src="{{ asset('images_users/' ~ image) }}" class="center">
 					<div class="retour">
 						{{ form(form) }}
 						</div>
