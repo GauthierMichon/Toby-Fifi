@@ -38,7 +38,7 @@ class HomeController extends AbstractController
 
         $user = $this->getUser();
 
-        if ($user->getRoles()[0] == "ROLE_ADMIN") {
+        if (!empty($user) && $user->getRoles()[0] == "ROLE_ADMIN") {
             return new RedirectResponse('/admin');
         }
 
@@ -207,6 +207,32 @@ class HomeController extends AbstractController
 
         if (!empty($notes)) {
             $moyenne = $total_note/$nb_note;
+        }
+
+        $user = $this->getUser();
+
+
+        if (!empty($user)) {
+            return $this->render('home/produit.html.twig', [
+                'produit' => $produit,
+                "form" => $form->createView(),
+                "form_note" => $form_note->createView(),
+                "commentaires" => $commentaires,
+                "moyenne" => $moyenne,
+                "role" => $role[0],
+                "user" => $user
+            ]);
+        }
+
+        else {
+            return $this->render('home/produit.html.twig', [
+                'produit' => $produit,
+                "form" => $form->createView(),
+                "form_note" => $form_note->createView(),
+                "commentaires" => $commentaires,
+                "moyenne" => $moyenne,
+                "role" => $role[0]
+            ]);
         }
 
 
