@@ -15,39 +15,41 @@
 				</div>
 				<form class="searchbar" action='/recherche' method='post'>
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
-                {% if app.user %}
+				{% if app.user %}
 					{% if role == "ROLE_ADMIN" %}
-					<div class="connex">
-						<form action='/create' method='post'>
-							<a href="/create">
-								<button type="button" class=" btn btn-primary btn-lg">
-									Créer un produit
-								</button>
-							</a>
-						</form>
-					</div>
+						<div class="connex">
+							<form action='/create' method='post'>
+								<a href="/create">
+									<button type="button" class=" btn btn-primary btn-lg">
+										Créer un produit
+									</button>
+								</a>
+							</form>
+						</div>
 					{% else %}
-					<div class="connex">
-						<form action='/show_panier' method='post'>
-							<a href="/show_panier">
-								<button type="button" class=" btn btn-primary btn-lg">
-									Panier
-								</button>
-							</a>
-						</form>
-							<span>Solde : {{user.Solde}} €</span>
+						<div class="connex">
+							<form action='/show_panier' method='post'>
+								<a href="/show_panier">
+									<button type="button" class=" btn btn-primary btn-lg">
+										Panier
+									</button>
+								</a>
+							</form>
+							<span>Solde :
+								{{user.Solde}}
+								€</span>
+						{% endif %}
+					{% else %}
+						<div class="connex">
+							<form action='/login' method='post'>
+								<a href="/login">
+									<button type="button" class=" btn btn-primary btn-lg">
+										Connexion
+									</button>
+								</a>
+							</form>
+						</div>
 					{% endif %}
-                {% else %}
-                <div class="connex">
-					<form action='/login' method='post'>
-						<a href="/login">
-							<button type="button" class=" btn btn-primary btn-lg">
-								Connexion
-							</button>
-						</a>
-					</form>
-				</div>
-				{% endif %}
 
 				</div>
 			</header>
@@ -100,18 +102,18 @@
 					</li>
 				</ul>
 			</li>
-            {% if app.user %}
+			{% if app.user %}
 				{% if role == "ROLE_ADMIN" %}
 					<li class="nav-item">
 						<a class="nav-link active" href="/admin_membres">Gérer les membres</a>
 					</li>
 				{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Recommandation</a>
-				</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Recommandation</a>
+					</li>
 				{% endif %}
 				<li class="nav-item">
 					<a class="nav-link" href="../logout">Se déconnecter</a>
@@ -144,16 +146,24 @@
 													{{ produit.DureeLivraison }}
 													jours
 												</p>
-											</a>
-										</div>
+											</div>
+											{% if produit.stock == 0 %}
+												<div class="card-footer">
+													<small class="text-muted">Non Disponible</small>
+												</div>
+											{% else %}
+												<div class="card-footer">
+													<small class="text-muted">Disponible</small>
+												</div>
+											{% endif %}
+										</a>
 									</div>
 								</div>
 							</div>
 						</div>
-					{% endfor %}
-				</div>
+					</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
-
-{% endblock %}
+</div>{% endblock %}

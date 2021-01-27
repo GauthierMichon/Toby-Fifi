@@ -19,10 +19,14 @@ class CategoriesFormType extends AbstractType
                 'class' => LesDiffCategories::class,
                 'choice_label' => function ($categories) {
                     return $categories->getNom();
-               }
+                }
             ])
-            ->add("submit", SubmitType::class)
-        ;
+            ->add("Ajouter", SubmitType::class, [
+                'attr' => [
+                    "class" => "btn btn-primary"
+
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

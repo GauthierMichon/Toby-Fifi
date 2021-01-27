@@ -98,8 +98,17 @@
 															{{ produit.DureeLivraison }}
 															jours
 														</p>
-													</a>
-												</div>
+													</div>
+													{% if produit.stock == 0 %}
+														<div class="card-footer">
+															<small class="text-muted">Non Disponible</small>
+														</div>
+													{% else %}
+														<div class="card-footer">
+															<small class="text-muted">Disponible</small>
+														</div>
+													{% endif %}
+												</a>
 											</div>
 										</div>
 									</div>
