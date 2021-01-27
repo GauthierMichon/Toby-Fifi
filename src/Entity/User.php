@@ -175,7 +175,7 @@ class User implements UserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
 
-        if ($this->getEmail() == "gauthier.michon@yahoo.fr") {
+        if ($this->getEmail() == "TobyFifi@gmail.com") {
             $roles[] = 'ROLE_ADMIN';
         }
         else {

@@ -6,7 +6,7 @@
 		<div class="header" id="myHeader">
 			<header id="containerD">
 				<div class="centerHeadLogo">
-					<a class="centerHeadLogo" href="/index">
+					<a class="centerHeadLogo" href="/home">
 						<h1><img id="logoTB" src="logo2.png" alt="logo du site"></h1>
 					</a>
 				</div>
@@ -82,21 +82,21 @@
 					</li>
 				</ul>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link active" href="#">Home</a>
-			</li>
 			{% if app.user %}
 			<li class="nav-item">
 				<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Recommandation</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/logout">Se déconnecter</a>
+			</li>
             {% else %}
             <li class="nav-item">
-				<a class="nav-link" href="register">Inscription</a>
+				<a class="nav-link" href="/register">Inscription</a>
 			</li>
             {% endif %}
-			<li class="nav-item">
-				<a class="nav-link" href="#">Autre</a>
-			</li>
 		</ul>
 		<div class="espace">
 			<div class="container">

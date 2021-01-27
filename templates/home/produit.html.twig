@@ -8,7 +8,7 @@
 		<div class="header" id="myHeader">
 			<header id="containerD">
 				<div class="centerHeadLogo">
-					<a class="centerHeadLogo" href="/index">
+					<a class="centerHeadLogo" href="/home">
 						<h1><img id="logoTB" src="../logo2.png" alt="logo du site"></h1>
 					</a>
 				</div>
@@ -61,46 +61,67 @@
 				</a>
 				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<li>
-						<a class="dropdown-item" href="#">Foot</a>
+						<a class="dropdown-item" href="/categorie/Jouets">Jouets</a>
 					</li>
 					<li>
-						<a class="dropdown-item" href="#">Rugby</a>
-					</li>
-					<li><hr class="dropdown-divider"></li>
-					<li>
-						<a class="dropdown-item" href="#">Chaussures</a>
+						<a class="dropdown-item" href="/categorie/Livres">Livres</a>
 					</li>
 					<li>
-						<a class="dropdown-item" href="#">Veste</a>
+						<a class="dropdown-item" href="/categorie/Musique DVD et Blu-ray">Musique DVD et Blu-ray</a>
 					</li>
 					<li>
-						<a class="dropdown-item" href="#">Camion</a>
+						<a class="dropdown-item" href="/categorie/Jeux vidéo et console">Jeux vidéo et console</a>
 					</li>
 					<li>
-						<a class="dropdown-item" href="#">Tracteur</a>
+						<a class="dropdown-item" href="/categorie/High-Tech">High-Tech</a>
 					</li>
 					<li>
-						<a class="dropdown-item" href="#">Sac à dos</a>
+						<a class="dropdown-item" href="/categorie/Sport et loisir">Sport et loisir</a>
 					</li>
 					<li>
-						<a class="dropdown-item" href="#">Voiture</a>
+						<a class="dropdown-item" href="/categorie/Cuisine et Maison">Cuisine et Maison</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="/categorie/Bricolage et jardin">Bricolage et jardin</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="/categorie/Animalerie">Animalerie</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="/categorie/Vêtements Chaussures et Bijoux">Vêtements Chaussures et Bijoux</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="/categorie/Informatique">Informatique</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="/categorie/Beauté et Santé">Beauté et Santé</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="/categorie/Épicerie et Boisson">Épicerie et Boisson</a>
 					</li>
 				</ul>
 			</li>
 			{% if app.user %}
 				{% if role == "ROLE_ADMIN" %}
 					<li class="nav-item">
-						<a class="nav-link active" href="admin_membres">Gérer les membres</a>
+						<a class="nav-link active" href="/admin_membres">Gérer les membres</a>
 					</li>
+				{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Recommandation</a>
+				</li>
 				{% endif %}
+				<li class="nav-item">
+					<a class="nav-link" href="../logout">Se déconnecter</a>
+				</li>
 			{% else %}
 				<li class="nav-item">
-					<a class="nav-link" href="register">Inscription</a>
+					<a class="nav-link" href="/register">Inscription</a>
 				</li>
 			{% endif %}
-			<li class="nav-item">
-				<a class="nav-link" href="../logout">Se déconnecter</a>
-			</li>
 		</ul>
 
 		<div class="espace">
@@ -157,33 +178,37 @@
 								{% endfor %}
 
 								{% if app.user %}
-									<div class="espace">
-										<div class="retour">
-											{{ form(form) }}
+									{% if Achat_TF %}
+										<div class="espace">
+											<div class="retour">
+												{{ form(form) }}
 											</div>
 										</div>
 									{% endif %}
+								{% endif %}
 
-									<div class="espace">
-										<h3>Moyenne des Notes :
-										</div>
-									</h3>
-
-									<div class="espace">
-										{{ moyenne }}
+								<div class="espace">
+									<h3>Moyenne des Notes :
 									</div>
+								</h3>
 
-									{% if app.user %}
+								<div class="espace">
+									{{ moyenne }}
+								</div>
+
+								{% if app.user %}
+									{% if Achat_TF %}
 										<div class="espace">
 											<div class="retour">
 												{{ form(form_note) }}
-												</div>
 											</div>
-										{% endif %}
-									</div>
+										</div>
+									{% endif %}
+								{% endif %}
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
 	</div>
 {% endblock %}

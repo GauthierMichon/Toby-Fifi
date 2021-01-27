@@ -46,6 +46,14 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
+            $to = $user->getEmail() ;
+            $subject = "Toby&Fifi - Inscription Validé" ;
+            $message = "Merci de votre inscription sur Toby&Fifi." ;
+            $headers = "From: projetwebynov@gmail.com";
+
+
+            mail($to, $subject, $message, $headers) ;
+
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,

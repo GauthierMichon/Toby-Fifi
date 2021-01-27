@@ -78,9 +78,9 @@ class HomeController extends AbstractController
         $Produits = $query->getResult();
 
         $user = $this->getUser();
-        $role = $user->getRoles();
 
-        if (!empty($user)) {
+        if (!empty($user)) {         
+            $role = $user->getRoles();
             return $this->render('home/recherche.html.twig', [
                 'produits' => $Produits,
                 "recherche" => $recherche,
@@ -105,10 +105,15 @@ class HomeController extends AbstractController
     {   
 
         $user = $this->getUser();
-        $role = $user->getRoles();
         $nb_note = 0;
         $total_note = 0;
         $moyenne = null;
+
+
+        $Achat_TF = $em
+            ->getRepository(Ventes::class)
+            ->findBy(array('id_produit'=> $id, 'id_user'=> $user->getID()));
+    
 
         if (!empty($user)) {
             $em = $this->getDoctrine()->getManager();
@@ -211,10 +216,10 @@ class HomeController extends AbstractController
             $moyenne = $total_note/$nb_note;
         }
 
-        $user = $this->getUser();
 
 
         if (!empty($user)) {
+            $role = $user->getRoles();
             return $this->render('home/produit.html.twig', [
                 'produit' => $produit,
                 "form" => $form->createView(),
@@ -222,7 +227,8 @@ class HomeController extends AbstractController
                 "commentaires" => $commentaires,
                 "moyenne" => $moyenne,
                 "role" => $role[0],
-                "user" => $user
+                "user" => $user,
+                "Achat_TF" => $Achat_TF
             ]);
         }
 
@@ -232,20 +238,9 @@ class HomeController extends AbstractController
                 "form" => $form->createView(),
                 "form_note" => $form_note->createView(),
                 "commentaires" => $commentaires,
-                "moyenne" => $moyenne,
-                "role" => $role[0]
+                "moyenne" => $moyenne
             ]);
         }
-
-
-        return $this->render('home/produit.html.twig', [
-            'produit' => $produit,
-            "form" => $form->createView(),
-            "form_note" => $form_note->createView(),
-            "commentaires" => $commentaires,
-            "moyenne" => $moyenne,
-            "role" => $role[0]
-        ]);
     }
 
     /**
@@ -507,7 +502,7 @@ class HomeController extends AbstractController
         $form = $this->createForm(UserFormType::class, $modif_user);
 
         $user = $this->getUser();
-
+        $role = $user->getRoles();
 
 
 
@@ -522,7 +517,8 @@ class HomeController extends AbstractController
 
         return $this->render('home/modif_user.html.twig', [
             "form" => $form->createView(),
-            "user" => $user
+            "user" => $user,
+            "role" => $role[0]
         ]);
     }
 
@@ -534,6 +530,7 @@ class HomeController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $modif_user = $em->getRepository(User::class)->find($id);
+        $role = $modif_user->getRoles();
 
         $ancienne_image = $modif_user->getImageName();
 
@@ -562,7 +559,9 @@ class HomeController extends AbstractController
 
         return $this->render('home/modif_user_image.html.twig', [
             "form" => $form->createView(),
-            "image" => $ancienne_image
+            "image" => $ancienne_image,
+            "user" => $modif_user,
+            "role" => $role[0]
         ]);
     }
 
