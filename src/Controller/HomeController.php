@@ -50,9 +50,7 @@ class HomeController extends AbstractController
                 'produits' => $Produits,
                 "user" => $user
             ]);
-        }
-
-        else {
+        } else {
             return $this->render('home/index.html.twig', [
                 'produits' => $Produits,
             ]);
@@ -71,15 +69,15 @@ class HomeController extends AbstractController
             'SELECT p
             FROM App\Entity\Produit p
             WHERE p.nom LIKE :recherche'
-        )->setParameter('recherche', '%'.$recherche.'%');
+        )->setParameter('recherche', '%' . $recherche . '%');
 
         // returns an array of Product objects
-        
+
         $Produits = $query->getResult();
 
         $user = $this->getUser();
 
-        if (!empty($user)) {         
+        if (!empty($user)) {
             $role = $user->getRoles();
             return $this->render('home/recherche.html.twig', [
                 'produits' => $Produits,
@@ -87,9 +85,7 @@ class HomeController extends AbstractController
                 "user" => $user,
                 "role" => $role[0]
             ]);
-        }
-
-        else {
+        } else {
             return $this->render('home/recherche.html.twig', [
                 'produits' => $Produits,
                 "recherche" => $recherche,
@@ -102,7 +98,7 @@ class HomeController extends AbstractController
      * @Route("/produit/{id}", name="show_post")
      */
     public function show(int $id, Produit $produit, Request $request, EntityManagerInterface $em)
-    {   
+    {
 
         $user = $this->getUser();
         $nb_note = 0;
@@ -110,27 +106,25 @@ class HomeController extends AbstractController
         $moyenne = null;
 
 
-        $Achat_TF = $em
-            ->getRepository(Ventes::class)
-            ->findBy(array('id_produit'=> $id, 'id_user'=> $user->getID()));
-    
-
         if (!empty($user)) {
+            $Achat_TF = $em
+                ->getRepository(Ventes::class)
+                ->findBy(array('id_produit' => $id, 'id_user' => $user->getID()));
+
             $em = $this->getDoctrine()->getManager();
             $modif_commentaire = $em
                 ->getRepository(Commentaires::class)
-                ->findBy(array('id_produit'=> $id, 'id_user'=> $user->getId()));
+                ->findBy(array('id_produit' => $id, 'id_user' => $user->getId()));
 
 
             $modif_note = $em
                 ->getRepository(Notes::class)
-                ->findBy(array('id_produit'=> $id, 'id_user'=> $user->getId()));
+                ->findBy(array('id_produit' => $id, 'id_user' => $user->getId()));
         }
 
         if (!empty($modif_commentaire)) {
             $form = $this->createForm(CommentairesFormType::class, $modif_commentaire[0]);
-        }
-        else {
+        } else {
             $commentaire = new Commentaires();
 
             $form = $this->createForm(CommentairesFormType::class, $commentaire);
@@ -141,12 +135,10 @@ class HomeController extends AbstractController
 
         if (!empty($modif_commentaire) && $form->isSubmitted() && $form->isValid()) {
             $em->persist($modif_commentaire[0]);
-            $em->flush();     
+            $em->flush();
 
             return $this->redirect($request->getUri());
-        }
-
-        else if (empty($modif_commentaire) && $form->isSubmitted() && $form->isValid()) {
+        } else if (empty($modif_commentaire) && $form->isSubmitted() && $form->isValid()) {
 
 
             $commentaire->setIdUser($user->getId());
@@ -154,24 +146,22 @@ class HomeController extends AbstractController
 
             $em->persist($commentaire);
             $em->flush();
-            
+
 
             return $this->redirect($request->getUri());
-
         }
 
         $em = $this->getDoctrine()->getManager();
         $commentaires = $em
             ->getRepository(Commentaires::class)
-            ->findBy(array('id_produit'=> $id));
+            ->findBy(array('id_produit' => $id));
 
-        
 
-    
+
+
         if (!empty($modif_note)) {
             $form_note = $this->createForm(NotesFormType::class, $modif_note[0]);
-        }
-        else {
+        } else {
             $note = new Notes();
 
             $form_note = $this->createForm(NotesFormType::class, $note);
@@ -183,12 +173,10 @@ class HomeController extends AbstractController
 
         if (!empty($modif_note) && $form_note->isSubmitted() && $form_note->isValid()) {
             $em->persist($modif_note[0]);
-            $em->flush();     
+            $em->flush();
 
             return $this->redirect($request->getUri());
-        }
-
-        else if (empty($modif_note) && $form_note->isSubmitted() && $form_note->isValid()) {
+        } else if (empty($modif_note) && $form_note->isSubmitted() && $form_note->isValid()) {
 
 
             $note->setIdUser($user->getId());
@@ -196,16 +184,15 @@ class HomeController extends AbstractController
 
             $em->persist($note);
             $em->flush();
-            
+
 
             return $this->redirect($request->getUri());
-
         }
 
         $em = $this->getDoctrine()->getManager();
         $notes = $em
             ->getRepository(Notes::class)
-            ->findBy(array('id_produit'=> $id));
+            ->findBy(array('id_produit' => $id));
 
         foreach ($notes as $note) {
             $nb_note += 1;
@@ -213,7 +200,7 @@ class HomeController extends AbstractController
         }
 
         if (!empty($notes)) {
-            $moyenne = $total_note/$nb_note;
+            $moyenne = $total_note / $nb_note;
         }
 
 
@@ -230,9 +217,7 @@ class HomeController extends AbstractController
                 "user" => $user,
                 "Achat_TF" => $Achat_TF
             ]);
-        }
-
-        else {
+        } else {
             return $this->render('home/produit.html.twig', [
                 'produit' => $produit,
                 "form" => $form->createView(),
@@ -281,13 +266,13 @@ class HomeController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $delete_produit = $em->getRepository(Produit::class)->find($id);
-        $delete_produit_panier = $em->getRepository(Panier::class)->findBy(array('id_produit'=> $id));
-        $delete_produit_notes = $em->getRepository(Notes::class)->findBy(array('id_produit'=> $id));
-        $delete_produit_commentaires = $em->getRepository(Commentaires::class)->findBy(array('id_produit'=> $id));
-        $delete_produit_ventes = $em->getRepository(Ventes::class)->findBy(array('id_produit'=> $id));
-        
+        $delete_produit_panier = $em->getRepository(Panier::class)->findBy(array('id_produit' => $id));
+        $delete_produit_notes = $em->getRepository(Notes::class)->findBy(array('id_produit' => $id));
+        $delete_produit_commentaires = $em->getRepository(Commentaires::class)->findBy(array('id_produit' => $id));
+        $delete_produit_ventes = $em->getRepository(Ventes::class)->findBy(array('id_produit' => $id));
 
-        unlink("images_produits/".$delete_produit->getImageName());
+
+        unlink("images_produits/" . $delete_produit->getImageName());
 
         foreach ($delete_produit_panier as $supp_panier) {
             $em->remove($supp_panier);
@@ -322,13 +307,13 @@ class HomeController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $delete_user = $em->getRepository(User::class)->find($id);
-        $delete_user_panier = $em->getRepository(Panier::class)->findBy(array('id_user'=> $id));
-        $delete_user_notes = $em->getRepository(Notes::class)->findBy(array('id_user'=> $id));
-        $delete_user_commentaires = $em->getRepository(Commentaires::class)->findBy(array('id_user'=> $id));
-        $delete_user_ventes = $em->getRepository(Ventes::class)->findBy(array('id_user'=> $id));
-        
+        $delete_user_panier = $em->getRepository(Panier::class)->findBy(array('id_user' => $id));
+        $delete_user_notes = $em->getRepository(Notes::class)->findBy(array('id_user' => $id));
+        $delete_user_commentaires = $em->getRepository(Commentaires::class)->findBy(array('id_user' => $id));
+        $delete_user_ventes = $em->getRepository(Ventes::class)->findBy(array('id_user' => $id));
 
-        unlink("images_users/".$delete_user->getImageName());
+
+        unlink("images_users/" . $delete_user->getImageName());
 
         foreach ($delete_user_panier as $supp_panier) {
             $em->remove($supp_panier);
@@ -370,7 +355,7 @@ class HomeController extends AbstractController
 
         $prod = $this->getDoctrine()
             ->getRepository(Panier::class)
-            ->findBy(array('id_produit'=> $delete_produit->getId(), 'id_user'=> $user->getId()));
+            ->findBy(array('id_produit' => $delete_produit->getId(), 'id_user' => $user->getId()));
 
 
         $em->remove($prod[0]);
@@ -416,19 +401,19 @@ class HomeController extends AbstractController
      */
     public function modif_produit_categories(int $id, Request $request, EntityManagerInterface $em)
     {
-        
+
         $categorie = new Categories();
         $user = $this->getUser();
         $produit = $em->getRepository(Produit::class)->find($id);
 
         $form = $this->createForm(CategoriesFormType::class, $categorie);
-        
+
 
         $categorie->setIdProduit($id);
 
         $form->handleRequest($request);
 
-        
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $categorie->setNomCategorie($categorie->getNomCategorie()->getNom());
@@ -436,7 +421,7 @@ class HomeController extends AbstractController
             $em->persist($categorie);
             $em->flush();
 
-            return new RedirectResponse('/modif/'.$id);
+            return new RedirectResponse('/modif/' . $id);
         }
 
         return $this->render('home/modif_produit_categories.html.twig', [
@@ -582,9 +567,7 @@ class HomeController extends AbstractController
 
         return new RedirectResponse('/home');
 
-        return $this->render('home/add_panier.html.twig', [
-            
-        ]);
+        return $this->render('home/add_panier.html.twig', []);
     }
 
     /**
@@ -595,7 +578,7 @@ class HomeController extends AbstractController
         $user_id = $this->getUser()->getId();
 
         $em = $this->getDoctrine()->getManager();
-        $panier_user = $em->getRepository(Panier::class)->findBy(array('id_user'=> $user_id));
+        $panier_user = $em->getRepository(Panier::class)->findBy(array('id_user' => $user_id));
 
 
         $panier = [];
@@ -604,13 +587,13 @@ class HomeController extends AbstractController
         $total = 0;
         $error = null;
 
-        foreach($panier_user as $produit) {
+        foreach ($panier_user as $produit) {
 
             $id = $produit->getIdProduit();
 
             $prod = $this->getDoctrine()
                 ->getRepository(Produit::class)
-                ->findBy(array('id'=> $id));
+                ->findBy(array('id' => $id));
 
             array_push($panier, $prod);
             array_push($id_prod_panier, $id);
@@ -618,21 +601,21 @@ class HomeController extends AbstractController
 
         $arr = array_count_values($id_prod_panier);
 
-        foreach($panier as $produit) {
+        foreach ($panier as $produit) {
 
             if ($produit[0]->getStock() < ($arr[$id])) {
-                $error = "Il n'y a pas assez de stock de ".$produit[0]->getNom()." pour finaliser votre commande.";
+                $error = "Il n'y a pas assez de stock de " . $produit[0]->getNom() . " pour finaliser votre commande.";
             }
         }
 
 
-        foreach($panier as $produit) {
-            foreach($produit as $prod) {
+        foreach ($panier as $produit) {
+            foreach ($produit as $prod) {
                 array_push($produits, $prod);
                 $total += $prod->getPrix();
             }
         }
-            
+
         $user = $this->getUser();
 
         return $this->render('home/show_panier.html.twig', [
@@ -651,28 +634,27 @@ class HomeController extends AbstractController
         $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
-        $panier_user = $em->getRepository(Panier::class)->findBy(array('id_user'=> $user->getId()));
+        $panier_user = $em->getRepository(Panier::class)->findBy(array('id_user' => $user->getId()));
 
         $panier = [];
         $produits = [];
         $total = 0;
 
-        foreach($panier_user as $produit) {
+        foreach ($panier_user as $produit) {
 
             $id = $produit->getIdProduit();
 
             $prod = $this->getDoctrine()
                 ->getRepository(Produit::class)
-                ->findBy(array('id'=> $id));
+                ->findBy(array('id' => $id));
 
             array_push($panier, $prod);
 
             $em->remove($produit);
-
         }
 
-        foreach($panier as $produit) {
-            foreach($produit as $prod) {
+        foreach ($panier as $produit) {
+            foreach ($produit as $prod) {
                 array_push($produits, $prod);
                 $total += $prod->getPrix();
 
@@ -689,8 +671,8 @@ class HomeController extends AbstractController
                 $em->persist($prod);
             }
         }
-            
-        
+
+
 
         $user->setSolde($user->getSolde() - $total);
         $user->setDepenseAvantBonAchat($user->getDepenseAvantBonAchat() - $total);
@@ -699,14 +681,14 @@ class HomeController extends AbstractController
         $em->flush();
 
 
-        $to = $user->getEmail() ;
-        $subject = "Toby&Fifi - Payement effectué" ;
-        $message = "Vous avez payé $total €. Merci de votre achat." ;
+        $to = $user->getEmail();
+        $subject = "Toby&Fifi - Payement effectué";
+        $message = "Vous avez payé $total €. Merci de votre achat.";
         $headers = "From: projetwebynov@gmail.com";
 
 
-        mail($to, $subject, $message, $headers) ;
-        
+        mail($to, $subject, $message, $headers);
+
 
 
 
@@ -731,8 +713,8 @@ class HomeController extends AbstractController
         $Produits = [];
 
         $categorie_selection = $this->getDoctrine()
-                ->getRepository(Categories::class)
-                ->findBy(array('nom_categorie'=> $categorie));
+            ->getRepository(Categories::class)
+            ->findBy(array('nom_categorie' => $categorie));
 
         foreach ($categorie_selection as $id_prod) {
             array_push($liste_id, $id_prod->getIdProduit());
@@ -742,14 +724,14 @@ class HomeController extends AbstractController
         foreach ($liste_id as $id) {
             $Produit = $this->getDoctrine()
                 ->getRepository(Produit::class)
-                ->findBy(array('id'=> $id));
+                ->findBy(array('id' => $id));
 
             array_push($Produits, $Produit[0]);
         }
 
 
         $user = $this->getUser();
-        
+
 
 
         if (!empty($user)) {
@@ -761,16 +743,10 @@ class HomeController extends AbstractController
                 "user" => $user,
                 "role" => $role[0]
             ]);
-        }
-
-        else {
+        } else {
             return $this->render('home/categorie.html.twig', [
                 "produits" => $Produits,
             ]);
         }
-
-        
-
-        
     }
 }

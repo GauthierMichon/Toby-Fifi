@@ -20,92 +20,94 @@
 							</button>
 						</a>
 					</form>
-			</header>
-		</div>
-		<ul class="nav justify-content-center">
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					Catégorie
-				</a>
-				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<li>
-						<a class="dropdown-item" href="/categorie/Jouets">Jouets</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Livres">Livres</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Musique DVD et Blu-ray">Musique DVD et Blu-ray</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Jeux vidéo et console">Jeux vidéo et console</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/High-Tech">High-Tech</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Sport et loisir">Sport et loisir</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Cuisine et Maison">Cuisine et Maison</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Bricolage et jardin">Bricolage et jardin</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Animalerie">Animalerie</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Vêtements Chaussures et Bijoux">Vêtements Chaussures et Bijoux</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Informatique">Informatique</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Beauté et Santé">Beauté et Santé</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Épicerie et Boisson">Épicerie et Boisson</a>
-					</li>
-				</ul>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link active" href="admin_membres">Gérer les membres</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link active" href="logout">Se déconnecter</a>
-			</li>
-		</ul>
-		<div class="espace">
-			<div class="container">
-				<div class="row">
-					{% for produit in produits %}
-						<div class="col-sm-4 col-lg-4">
-							<div class="col">
-								<div class="espace">
-									<div class="card h-100">
-										<a href="/produit/{{ produit.Id }}" class="link">
-											<img src="{{ asset('images_produits/' ~ produit.ImageName) }}" class="card-img-top" alt="...">
-											<div class="card-body">
-												<h4 class="card-title">{{ produit.nom }}</h4>
-												<p class="card-text">
-													Prix :
-													{{ produit.prix }}
-													euros
-													<br>
-													Durée de livraison :
-													{{ produit.DureeLivraison }}
-													jours
-												</p>
-											</a>
+				</header>
+			</div>
+			<ul class="nav justify-content-center">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Catégorie
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<li>
+							<a class="dropdown-item" href="/categorie/Jouets">Jouets</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Livres">Livres</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Musique DVD et Blu-ray">Musique DVD et Blu-ray</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Jeux vidéo et console">Jeux vidéo et console</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/High-Tech">High-Tech</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Sport et loisir">Sport et loisir</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Cuisine et Maison">Cuisine et Maison</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Bricolage et jardin">Bricolage et jardin</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Animalerie">Animalerie</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Vêtements Chaussures et Bijoux">Vêtements Chaussures et Bijoux</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Informatique">Informatique</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Beauté et Santé">Beauté et Santé</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Épicerie et Boisson">Épicerie et Boisson</a>
+						</li>
+					</ul>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="admin_membres">Gérer les membres</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="logout">Se déconnecter</a>
+				</li>
+			</ul>
+			<div class="espace">
+				<div class="container">
+					<div class="espacebas">
+						<div class="row">
+							{% for produit in produits %}
+								<div class="col-sm-4 col-lg-4">
+									<div class="col">
+										<div class="espace">
+											<div class="card h-100">
+												<a href="/produit/{{ produit.Id }}" class="link">
+													<img src="{{ asset('images_produits/' ~ produit.ImageName) }}" class="card-img-top" alt="...">
+													<div class="card-body">
+														<h4 class="card-title">{{ produit.nom }}</h4>
+														<p class="card-text">
+															Prix :
+															{{ produit.prix }}
+															euros
+															<br>
+															Durée de livraison :
+															{{ produit.DureeLivraison }}
+															jours
+														</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							{% endfor %}
 						</div>
-					{% endfor %}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}

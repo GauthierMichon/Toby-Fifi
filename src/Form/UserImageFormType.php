@@ -15,8 +15,12 @@ class UserImageFormType extends AbstractType
     {
         $builder
             ->add('ImageName', FileType::class)
-            ->add("Modifier", SubmitType::class)
-        ;
+            ->add("Modifier", SubmitType::class, [
+                'attr' => [
+                    "class" => "btn btn-primary"
+
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

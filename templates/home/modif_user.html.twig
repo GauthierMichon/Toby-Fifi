@@ -16,121 +16,123 @@
 				<form class="searchbar" action='/recherche' method='post'>
 					<input type='text' name='rechercher' placeholder="Rechercher"/></form>
 				<div class="connex">
-				{% if role == "ROLE_ADMIN" %}
-					<form action='/create' method='post'>
-						<a href="/create">
-							<button type="button" class=" btn btn-primary btn-lg">
-								Créer un produit
-							</button>
-						</a>
-					</form>
-				{% else %}
-					<form action='/show_panier' method='post'>
-						<a href="/show_panier">
-							<button type="button" class=" btn btn-primary btn-lg">
-								Panier
-							</button>
-						</a>
-					</form>
-					<span>Solde :
+					{% if role == "ROLE_ADMIN" %}
+						<form action='/create' method='post'>
+							<a href="/create">
+								<button type="button" class=" btn btn-primary btn-lg">
+									Créer un produit
+								</button>
+							</a>
+						</form>
+					{% else %}
+						<form action='/show_panier' method='post'>
+							<a href="/show_panier">
+								<button type="button" class=" btn btn-primary btn-lg">
+									Panier
+								</button>
+							</a>
+						</form>
+						<span>Solde :
 							{{user.Solde}}
 							€</span>
+					{% endif %}
+				</header>
+			</div>
+			<ul class="nav justify-content-center">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Catégorie
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<li>
+							<a class="dropdown-item" href="/categorie/Jouets">Jouets</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Livres">Livres</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Musique DVD et Blu-ray">Musique DVD et Blu-ray</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Jeux vidéo et console">Jeux vidéo et console</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/High-Tech">High-Tech</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Sport et loisir">Sport et loisir</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Cuisine et Maison">Cuisine et Maison</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Bricolage et jardin">Bricolage et jardin</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Animalerie">Animalerie</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Vêtements Chaussures et Bijoux">Vêtements Chaussures et Bijoux</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Informatique">Informatique</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Beauté et Santé">Beauté et Santé</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="/categorie/Épicerie et Boisson">Épicerie et Boisson</a>
+						</li>
+					</ul>
+				</li>
+				{% if role == "ROLE_ADMIN" %}
+					<li class="nav-item">
+						<a class="nav-link active" href="/admin_membres">Gérer les membres</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Recommandation</a>
+					</li>
 				{% endif %}
-			</header>
-		</div>
-		<ul class="nav justify-content-center">
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					Catégorie
-				</a>
-				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<li>
-						<a class="dropdown-item" href="/categorie/Jouets">Jouets</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Livres">Livres</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Musique DVD et Blu-ray">Musique DVD et Blu-ray</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Jeux vidéo et console">Jeux vidéo et console</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/High-Tech">High-Tech</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Sport et loisir">Sport et loisir</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Cuisine et Maison">Cuisine et Maison</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Bricolage et jardin">Bricolage et jardin</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Animalerie">Animalerie</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Vêtements Chaussures et Bijoux">Vêtements Chaussures et Bijoux</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Informatique">Informatique</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Beauté et Santé">Beauté et Santé</a>
-					</li>
-					<li>
-						<a class="dropdown-item" href="/categorie/Épicerie et Boisson">Épicerie et Boisson</a>
-					</li>
-				</ul>
-			</li>
-			{% if role == "ROLE_ADMIN" %}
-				<li class="nav-item">
-					<a class="nav-link active" href="/admin_membres">Gérer les membres</a>
-				</li>
-			{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Recommandation</a>
-				</li>
-			{% endif %}
 				<li class="nav-item">
 					<a class="nav-link" href="../logout">Se déconnecter</a>
 				</li>
-		</ul>
-		<div class="espace">
+			</ul>
+			<div class="espace">
 
-		<div class="espace">
-			<h1>Modification de votre profil</h1>
-		</div>
-		<div class="container">
-			<div class="row justify-content-md-center">
-				<div class="inscrip">
-					<img src="{{ asset('images_users/' ~ user.ImageName) }}" class="center">
-					<div class="espace">
-						<div class="retour">
-							{{ form_start(form)}}
-							{{ form_row(form.email) }}
-							{{ form_row(form.nom) }}
-							{{ form_row(form.prenom) }}
-							{{ form_row(form.solde) }}
-							<div class="centrage">
-								{{ form_row(form.date_naissance) }}
-							</div>
-							<div class="centrage">
-								<button type="submit" class="btn btn-primary">Modifier</button>
-							</div>
-							{{ form_end(form) }}
-							<div class="centrage">
-								<a href="/modif_user_image/{{ user.Id }}" class="btn btn-primary">Modifier la photo de profil</a>
+				<div class="espace">
+					<h1>Modification de votre profil</h1>
+				</div>
+				<div class="container">
+					<div class="row justify-content-md-center">
+						<div class="inscrip">
+							<img src="{{ asset('images_users/' ~ user.ImageName) }}" class="center">
+							<div class="espace">
+								<div class="retour">
+									{{ form_start(form)}}
+									{{ form_row(form.email) }}
+									{{ form_row(form.nom) }}
+									{{ form_row(form.prenom) }}
+									{{ form_row(form.solde) }}
+									<div class="centrage">
+										{{ form_row(form.date_naissance) }}
+									</div>
+									<div class="centrage">
+										<button type="submit" class="btn btn-primary">Modifier</button>
+									</div>
+									{{ form_end(form) }}
+									<div class="espacebas">
+										<div class="centrage">
+											<a href="/modif_user_image/{{ user.Id }}" class="btn btn-primary">Modifier la photo de profil</a>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-{% endblock %}
+		{% endblock %}

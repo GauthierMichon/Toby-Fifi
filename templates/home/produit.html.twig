@@ -107,12 +107,12 @@
 						<a class="nav-link active" href="/admin_membres">Gérer les membres</a>
 					</li>
 				{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Recommandation</a>
-				</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/modif_user/{{ user.Id }}">Modifier le profil</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Recommandation</a>
+					</li>
 				{% endif %}
 				<li class="nav-item">
 					<a class="nav-link" href="../logout">Se déconnecter</a>
@@ -182,33 +182,35 @@
 										<div class="espace">
 											<div class="retour">
 												{{ form(form) }}
+												</div>
 											</div>
-										</div>
+										{% endif %}
 									{% endif %}
-								{% endif %}
 
-								<div class="espace">
-									<h3>Moyenne des Notes :
+									<div class="espace">
+										<h3>Moyenne des Notes :
+										</div>
+									</h3>
+
+									<div class="espace">
+										{{ moyenne }}
 									</div>
-								</h3>
 
-								<div class="espace">
-									{{ moyenne }}
-								</div>
-
-								{% if app.user %}
-									{% if Achat_TF %}
-										<div class="espace">
-											<div class="retour">
-												{{ form(form_note) }}
-											</div>
-										</div>
-									{% endif %}
-								{% endif %}
+									{% if app.user %}
+										{% if Achat_TF %}
+											<div class="espacebas">
+												<div class="espace">
+													<div class="retour">
+														{{ form(form_note) }}
+														</div>
+													</div>
+												</div>
+											{% endif %}
+										{% endif %}
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-	</div>
-{% endblock %}
+			{% endblock %}
