@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,6 +33,11 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('prenom', TextType::class, [
+                'attr' => [
+                    "class" => "form-control"
+                ]
+            ])
+            ->add('solde', MoneyType::class, [
                 'attr' => [
                     "class" => "form-control"
                 ]
