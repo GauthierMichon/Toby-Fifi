@@ -234,10 +234,20 @@ class HomeController extends AbstractController
     public function create(Request $request, EntityManagerInterface $em)
     {
 
+        $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRole() == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
+
         $produit = new Produit();
 
         $form = $this->createForm(ProduitType::class, $produit);
-
 
         $form->handleRequest($request);
 
@@ -251,7 +261,7 @@ class HomeController extends AbstractController
             $em->persist($produit);
             $em->flush();
 
-            return new RedirectResponse('/home');
+            return new RedirectResponse('/admin');
         }
 
         return $this->render('home/create.html.twig', [
