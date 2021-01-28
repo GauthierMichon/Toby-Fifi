@@ -234,10 +234,20 @@ class HomeController extends AbstractController
     public function create(Request $request, EntityManagerInterface $em)
     {
 
+        $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
+
         $produit = new Produit();
 
         $form = $this->createForm(ProduitType::class, $produit);
-
 
         $form->handleRequest($request);
 
@@ -251,7 +261,7 @@ class HomeController extends AbstractController
             $em->persist($produit);
             $em->flush();
 
-            return new RedirectResponse('/home');
+            return new RedirectResponse('/admin');
         }
 
         return $this->render('home/create.html.twig', [
@@ -375,6 +385,18 @@ class HomeController extends AbstractController
         $modif_produit = $em->getRepository(Produit::class)->find($id);
 
 
+        $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
+
+
 
         $form = $this->createForm(ModifProduitType::class, $modif_produit);
 
@@ -403,7 +425,19 @@ class HomeController extends AbstractController
     {
 
         $categorie = new Categories();
+
+
         $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
+
         $produit = $em->getRepository(Produit::class)->find($id);
 
         $form = $this->createForm(CategoriesFormType::class, $categorie);
@@ -439,12 +473,25 @@ class HomeController extends AbstractController
      */
     public function modif_produit_image(int $id, Request $request, EntityManagerInterface $em)
     {
+
+        $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
+
+
         $em = $this->getDoctrine()->getManager();
         $modif_produit = $em->getRepository(Produit::class)->find($id);
 
         $ancienne_image = $modif_produit->getImageName();
 
-
+        
         $modif_produit->setImageName(null);
 
         $form = $this->createForm(ProduitImageFormType::class, $modif_produit);
@@ -486,7 +533,13 @@ class HomeController extends AbstractController
 
         $form = $this->createForm(UserFormType::class, $modif_user);
 
+
         $user = $this->getUser();
+
+        if (empty($user)) {
+            return new RedirectResponse('/home');
+        }
+
         $role = $user->getRoles();
 
 
@@ -516,6 +569,12 @@ class HomeController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $modif_user = $em->getRepository(User::class)->find($id);
         $role = $modif_user->getRoles();
+
+        $user = $this->getUser();
+
+        if (empty($user)) {
+            return new RedirectResponse('/home');
+        }
 
         $ancienne_image = $modif_user->getImageName();
 
@@ -575,7 +634,19 @@ class HomeController extends AbstractController
      */
     public function show_panier(EntityManagerInterface $em)
     {
-        $user_id = $this->getUser()->getId();
+
+        $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_ADMIN") {
+                return new RedirectResponse('/admin');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
+
+        $user_id = $user->getId();
 
         $em = $this->getDoctrine()->getManager();
         $panier_user = $em->getRepository(Panier::class)->findBy(array('id_user' => $user_id));
@@ -616,7 +687,6 @@ class HomeController extends AbstractController
             }
         }
 
-        $user = $this->getUser();
 
         return $this->render('home/show_panier.html.twig', [
             "produits" => $produits,
@@ -680,14 +750,99 @@ class HomeController extends AbstractController
         $em->persist($user);
         $em->flush();
 
+        $rand = md5(uniqid());
+        touch("factures/".$rand.".pdf");
+        $handle1 = fopen("factures/".$rand.".pdf", 'w');
+        fwrite($handle1, "Ceci est votre facture. Vous avez payé $total € pour votre achat.");
+        fclose($handle1);
+        
+
+        $to = $user->getEmail();
+ 
+        // Subject
+        $subject = 'Facture Tboy&Fifi';
+        
+        // clé aléatoire de limite
+        $boundary = md5(uniqid(microtime(), TRUE));
+        
+        // Headers
+        $headers = 'From: projetwebynov@gmail.com'."\r\n";
+        $headers .= 'Mime-Version: 1.0'."\r\n";
+        $headers .= 'Content-Type: multipart/mixed;boundary='.$boundary."\r\n";
+        $headers .= "\r\n";
+        
+        // Message
+        $msg = 'This is a multipart/mixed message.'."\r\n\r\n";
+        
+        // Texte
+        $msg .= '--'.$boundary."\r\n";
+        $msg .= 'Content-type:text/plain;charset=utf-8'."\r\n";
+        $msg .= 'Content-transfer-encoding:8bit'."\r\n";
+        $msg .= "Vous avez payé $total €. Merci de votre achat."."\r\n\r\n";
+        
+        // Pièce jointe
+        $file_name = "factures/".$rand.".pdf";
+        if (file_exists($file_name))
+        {
+            $file_type = filetype($file_name);
+            $file_size = filesize($file_name);
+        
+            $handle = fopen($file_name, 'r') or die('File '.$file_name.'can t be open');
+            $content = fread($handle, $file_size);
+            $content = chunk_split(base64_encode($content));
+            fclose($handle);
+        
+            $msg .= '--'.$boundary."\r\n";
+            $msg .= 'Content-type:'.$file_type.';name='.$file_name."\r\n";
+            $msg .= 'Content-transfer-encoding:base64'."\r\n";
+            $msg .= $content."\r\n";
+        }
+        
+        // Fin
+        $msg .= '--'.$boundary."\r\n";
+        
+        // Function mail()
+        mail($to, $subject, $msg, $headers);
+
+
+        /* $boundary = md5(uniqid(microtime(), TRUE));
 
         $to = $user->getEmail();
         $subject = "Toby&Fifi - Payement effectué";
-        $message = "Vous avez payé $total €. Merci de votre achat.";
-        $headers = "From: projetwebynov@gmail.com";
+
+        $headers = "From: projetwebynov@gmail.com"."\r\n";
+        $headers = 'Mime-Version: 1.0'."\r\n";
+        $headers = 'Content-Type: multipart/mixed;boundary='.$boundary."\r\n";
+        $headers = "\r\n";
+
+        $message = "Vous avez payé $total €. Merci de votre achat."."\r\n\r\n";
+
+        $message .= 'Content-type:text/plain;charset=utf-8'."\r\n";
+        $message .= 'Content-transfer-encoding:8bit'."\r\n";
 
 
-        mail($to, $subject, $message, $headers);
+        $file = "logo1.png";
+
+        $file_type = filetype($file);
+        $file_size = filesize($file);
+    
+        $handle = fopen($file, 'r') or die('File '.$file.'can t be open');
+        $content = fread($handle, $file_size);
+        $content = chunk_split(base64_encode($content));
+        $f = fclose($handle);
+    
+        $message .= '--'.$boundary."\r\n";
+        $message .= 'Content-type:'.$file_type.';name='.$file."\r\n";
+        $message .= 'Content-transfer-encoding:base64'."\r\n";
+        $message .= $content."\r\n";
+
+        $message .= '--'.$boundary."\r\n";
+
+
+        
+
+
+        mail($to, $subject, $message, $headers); */
 
 
 

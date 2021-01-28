@@ -6,6 +6,7 @@ use App\Entity\Produit;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,6 +17,18 @@ class AdminController extends AbstractController
      */
     public function index(EntityManagerInterface $em): Response
     {
+
+
+        $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
 
         $date = (new \DateTime());
         $date->modify('-7 day');
@@ -78,9 +91,6 @@ class AdminController extends AbstractController
         }
 
 
-        $user = $this->getUser();
-
-
         return $this->render('admin/index.html.twig', [
             "user" => $user,
             "total_prix_7" => $total_prix_7,
@@ -102,6 +112,15 @@ class AdminController extends AbstractController
             ->findAll();
 
         $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
 
 
         if (!empty($user)) {
@@ -130,6 +149,15 @@ class AdminController extends AbstractController
 
         $user = $this->getUser();
 
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
+
 
         if (!empty($user)) {
             return $this->render('admin/admin_membres.html.twig', [
@@ -152,6 +180,17 @@ class AdminController extends AbstractController
     public function recherche_users(EntityManagerInterface $em)
     {
 
+        $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
+
         $recherche = $_POST['rechercher_users'];
 
         $query = $em->createQuery(
@@ -164,7 +203,6 @@ class AdminController extends AbstractController
         
         $Users = $query->getResult();
 
-        $user = $this->getUser();
         $role = $user->getRoles();
 
         if (!empty($user)) {
@@ -194,6 +232,16 @@ class AdminController extends AbstractController
     {   
 
         $user = $this->getUser();
+
+        if (!empty($user)) {
+            if ($user->getRoles()[0] == "ROLE_USER") {
+                return new RedirectResponse('/home');
+            }
+        }
+        else {
+            return new RedirectResponse('/home');
+        }
+
         $role = $user->getRoles();
         
 
