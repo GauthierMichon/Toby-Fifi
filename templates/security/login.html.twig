@@ -77,7 +77,16 @@
 			</li>
 		</ul>
 
-		<form method="post" class="centre_formulaire_login">
+		<div class="header" id="header1">
+			<div class="center espace">
+				<div class="caption animated bounceInDown">
+					<h2 class="title display-3">Connexion</h2>
+				</div>
+			</div>
+			<i class="scroll fa fa-angle-double-down"></i>
+		</div>
+
+		<form method="post" class="container espace" style="width: 350px;">
 			<div class="mb-3">
 				<label for="inputEmail" class="form-label">Email</label>
 				<input type="email" value="{{ last_username }}" name="email" class="form-control" id="inputEmail" placeholder="email@example.com">
@@ -101,13 +110,13 @@
 			{% endif %}
 		</form>
 		{#
-		        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-		        See https://symfony.com/doc/current/security/remember_me.html
-		
-		        <div class="checkbox mb-3">
-		            <label>
-		                <input type="checkbox" name="_remember_me"> Remember me
-		            </label>
-		        </div>
-		    #}
+																																																										        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+																																																										        See https://symfony.com/doc/current/security/remember_me.html
+																																																										
+																																																										        <div class="checkbox mb-3">
+																																																										            <label>
+																																																										                <input type="checkbox" name="_remember_me"> Remember me
+																																																										            </label>
+																																																										        </div>
+																																																										    #}
 	{% endblock %}
