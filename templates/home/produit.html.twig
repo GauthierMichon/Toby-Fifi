@@ -163,8 +163,12 @@ new WOW().init();
 										<a href="/delete/{{ produit.Id }}" class="btn btn-primary">Supprimer le produit</a>
 										<a href="/admin" class="btn btn-primary">Retour</a>
 									{% else %}
-										<a href="/add_panier/{{ produit.Id }}" class="btn btn-primary">Ajouter au panier</a>
-										<a href="/home" class="btn btn-primary">Retour</a>
+										{% if produit.stock == 0 %}
+											<a href="/home" class="btn btn-primary">Retour</a>
+										{% else %}
+											<a href="/add_panier/{{ produit.Id }}" class="btn btn-primary">Ajouter au panier</a>
+											<a href="/home" class="btn btn-primary">Retour</a>
+										{% endif %}
 									{% endif %}
 								{% else %}
 									<a href="/home" class="btn btn-primary">Retour</a>
