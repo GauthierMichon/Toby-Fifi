@@ -49,5 +49,5 @@ Allez à cet url :
 
 
 Identifiants de l'admin :
-Email : TobyFifi@gmail.com
-mot de passe : admin33
+<br/>Email : TobyFifi@gmail.com
+<br/>Mot de passe : admin33
