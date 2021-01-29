@@ -54,7 +54,7 @@
         "symfony/stopwatch": "^5.2",
         "symfony/var-dumper": "^5.2",
         "symfony/web-profiler-bundle": "^5.2",
-        "symfony/webpack-encore-bundle": "^1.8"
+        "symfony/webpack-encore-bundle": "^1.9"
     },
     "config": {
         "optimize-autoloader": true,

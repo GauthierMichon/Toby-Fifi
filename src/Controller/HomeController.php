@@ -274,11 +274,13 @@ class HomeController extends AbstractController
      */
     public function delete(int $id, Request $request, EntityManagerInterface $em)
     {
+
         $em = $this->getDoctrine()->getManager();
         $delete_produit = $em->getRepository(Produit::class)->find($id);
         $delete_produit_panier = $em->getRepository(Panier::class)->findBy(array('id_produit' => $id));
         $delete_produit_notes = $em->getRepository(Notes::class)->findBy(array('id_produit' => $id));
         $delete_produit_commentaires = $em->getRepository(Commentaires::class)->findBy(array('id_produit' => $id));
+        $delete_produit_categorie = $em->getRepository(Categories::class)->findBy(array('id_produit' => $id));
         $delete_produit_ventes = $em->getRepository(Ventes::class)->findBy(array('id_produit' => $id));
 
 
@@ -286,6 +288,10 @@ class HomeController extends AbstractController
 
         foreach ($delete_produit_panier as $supp_panier) {
             $em->remove($supp_panier);
+        }
+
+        foreach ($delete_produit_categorie as $supp_cate) {
+            $em->remove($supp_cate);
         }
 
         foreach ($delete_produit_notes as $supp_note) {
@@ -304,14 +310,14 @@ class HomeController extends AbstractController
         $em->remove($delete_produit);
         $em->flush();
 
-        return new RedirectResponse('/home');
+        return new RedirectResponse('/admin');
 
         return $this->render('home/delete.html.twig', []);
     }
 
 
     /**
-     * @Route("/delete_user/{id}", name="delete_post")
+     * @Route("/delete_user/{id}", name="delete_user")
      */
     public function delete_user(int $id, Request $request, EntityManagerInterface $em)
     {
@@ -345,7 +351,7 @@ class HomeController extends AbstractController
         $em->remove($delete_user);
         $em->flush();
 
-        return new RedirectResponse('/home');
+        return new RedirectResponse('/admin');
 
         return $this->render('home/delete_user.html.twig', []);
     }
@@ -556,6 +562,7 @@ class HomeController extends AbstractController
         return $this->render('home/modif_user.html.twig', [
             "form" => $form->createView(),
             "user" => $user,
+            "modif_user" => $modif_user,
             "role" => $role[0]
         ]);
     }
@@ -864,6 +871,8 @@ class HomeController extends AbstractController
     public function categorie(string $categorie, EntityManagerInterface $em)
     {
 
+        
+
         $liste_id = [];
         $Produits = [];
 
@@ -871,18 +880,24 @@ class HomeController extends AbstractController
             ->getRepository(Categories::class)
             ->findBy(array('nom_categorie' => $categorie));
 
+
         foreach ($categorie_selection as $id_prod) {
             array_push($liste_id, $id_prod->getIdProduit());
         }
 
 
+
         foreach ($liste_id as $id) {
+
+
             $Produit = $this->getDoctrine()
                 ->getRepository(Produit::class)
-                ->findBy(array('id' => $id));
+                ->find($id);
 
-            array_push($Produits, $Produit[0]);
+
+            array_push($Produits, $Produit);
         }
+
 
 
         $user = $this->getUser();

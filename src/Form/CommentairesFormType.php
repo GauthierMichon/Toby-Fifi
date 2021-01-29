@@ -19,7 +19,7 @@ class CommentairesFormType extends AbstractType
                     "class" => "form-control"
                 ]
             ])
-            ->add("Envoyer", SubmitType::class, [
+            ->add("submit", SubmitType::class, [
                 'attr' => [
                     "class" => "btn btn-primary centrage"
 

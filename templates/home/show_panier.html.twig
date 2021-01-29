@@ -127,7 +127,7 @@
 
 
 		<div class="inscrip">
-			<div class="espace">
+			<div class="espace espacebas">
 				{% if error == true %}
 
 					<h3>
@@ -140,7 +140,7 @@
 						{{ total }}
 					</h3>
 
-					<h3>Vous n'avez pas assez d'argent sur votre compte :
+					<h3 class = "espacebas">Vous n'avez pas assez d'argent sur votre compte :
 						<a href="/modif_user/{{ user.Id }}" class="btn btn-primary">Modifier le profil</a>
 					{% else %}
 						<h3>
@@ -149,7 +149,7 @@
 							euros
 						</h3>
 					</div>
-					<div class="espace">
+					<div class="espace espacebas">
 						<a href="/payer" class="btn btn-primary">Payer</a>
 					</div>
 				{% endif %}

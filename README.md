@@ -46,3 +46,8 @@ Enfin lancer votre server avec la commande :
 
 Allez à cet url : 
 <br/>`http://127.0.0.1:8000/home`
+
+
+Identifiants de l'admin :
+Email : TobyFifi@gmail.com
+mot de passe : admin33
